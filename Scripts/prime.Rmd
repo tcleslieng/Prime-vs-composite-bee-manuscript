@@ -1,0 +1,445 @@
+---
+title: "Exploring categorisation of prime and composite quantities in honeybees using perceptual grouping"
+author: "Leslie Ng and Scarlett Howard"
+date: "04-07-2023"
+output:
+  html_document:
+   toc: yes
+   toc_float: yes
+   collapsed: true 
+   smooth_scroll: true
+   depth: 3 
+   highlight: tango # different theme for the appearance of the code
+   theme: flatly
+   code_folding: hide
+self_contained: yes
+mode: selfcontained
+editor_options:
+  chunk_output_type: console
+knit: (function(inputFile, encoding) {
+  rmarkdown::render(inputFile, encoding = encoding, output_dir = "../Output") })
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(error = TRUE)
+```
+
+
+# **Introduction**
+
+
+In this document we tested if free-flying honey bees that are habituated to even composite numbers spontaneously discriminate an odd prime number from an odd composite number. This document provides details on data processing, statistical analysis and figures of the original manuscript submitted for peer review (titled: "xxx").
+
+The following code is written in the R programming language.
+
+
+EE = Equal element size condition, 
+SA = Equal surface area condition
+
+
+# **Libraries** 
+
+### *Install packages*
+```{r eval=FALSE}
+install.packages("lme4")  # For fitting models
+install.packages("ggplot2") # For plotting
+install.packages("wesanderson") # Color palette
+install.packages("dplyr") # Data processing
+install.packages("tidyverse") # QoL
+install.packages("ggpubr") # Create figure
+install.packages("patchwork") # Create figure
+```
+
+### *Load packages*
+
+```{r, message=FALSE, warning=FALSE}
+library(lme4) 
+library(ggplot2) 
+library(wesanderson)
+library(dplyr) 
+library(tidyverse) 
+library(patchwork) 
+```
+
+
+
+# **Data importing**
+
+```{r, message=FALSE, results="hide"}
+
+PRIMEDATA <- read.csv("../Data/prime_data.csv", header=TRUE)
+
+PRIMEGRP <- read.csv(
+  "../Data/primegrouped_data.csv", header=TRUE)
+
+CONTROL <- read.csv(
+  "../Data/control_data.csv", header=TRUE)
+
+#Subset Prime data 
+
+PRIMEDATA$BEEID <- as.factor(PRIMEDATA$BEEID) # Treat Bee ID as factor
+POSITIVE <- subset(PRIMEDATA, CONDITION == "POSITIVE") 
+NEGATIVE <- subset(PRIMEDATA, CONDITION == "NEGATIVE") 
+POS7v9 <-subset(POSITIVE, TEST == "7v9") 
+POS11v9 <-subset(POSITIVE, TEST == "11v9") 
+POS13v15 <-subset(POSITIVE, TEST == "13v15") 
+NEG7v9 <-subset(NEGATIVE, TEST == "7v9") 
+NEG11v9 <-subset(NEGATIVE, TEST == "11v9") 
+NEG13v15 <-subset(NEGATIVE, TEST == "13v15") 
+summary(POS7v9)
+summary(NEG7v9)
+summary(POS11v9)
+summary(NEG11v9)
+summary(POS13v15)
+summary(NEG13v15)
+
+#Subset Prime grouped data
+
+PRIMEGRP$BEEID <- as.factor(PRIMEGRP$BEEID) # Treat Bee ID as factor
+POSITIVE_GRP <- subset(PRIMEGRP, CONDITION == "POS") 
+NEGATIVE_GRP <- subset(PRIMEGRP, CONDITION == "NEG") 
+POS7v9_GRP <-subset(POSITIVE_GRP, TEST == "7v9") 
+POS11v9_GRP <-subset(POSITIVE_GRP, TEST == "11v9") 
+POS13v15_GRP <-subset(POSITIVE_GRP, TEST == "13v15") 
+NEG7v9_GRP <-subset(NEGATIVE_GRP, TEST == "7v9") 
+NEG11v9_GRP <-subset(NEGATIVE_GRP, TEST == "11v9") 
+NEG13v15_GRP <-subset(NEGATIVE_GRP, TEST == "13v15") 
+POSCONT_GRP <-subset(POSITIVE_GRP, TEST == "control")
+NEGCONT_GRP<-subset(NEGATIVE_GRP, TEST == "control")
+summary(POS7v9_GRP)
+summary(NEG7v9_GRP)
+summary(POS11v9_GRP)
+summary(NEG11v9_GRP)
+summary(POS13v15_GRP)
+summary(NEG13v15_GRP)
+
+#Subset control data
+
+CONTROL$BEEID <- as.factor(CONTROL$BEEID) # Treat Bee ID as factor
+
+conSA <-subset(CONTROL, CONDITION == "SA") 
+conEE <-subset(CONTROL, CONDITION == "EE") 
+
+EEcon3v1 <-subset(conEE, TEST == "3v1") 
+EEcon3v2 <-subset(conEE, TEST == "3v2") 
+EEcon3v4 <-subset(conEE, TEST == "3v4") 
+EEcon3v5 <-subset(conEE, TEST == "3v5") 
+
+SAcon3v1 <-subset(conSA, TEST == "3v1") 
+SAcon3v2 <-subset(conSA, TEST == "3v2") 
+SAcon3v4 <-subset(conSA, TEST == "3v4") 
+SAcon3v5 <-subset(conSA, TEST == "3v5") 
+
+summary(EEcon3v1)
+summary(EEcon3v2)
+summary(EEcon3v4)
+summary(EEcon3v5)
+summary(SAcon3v1)
+summary(SAcon3v2)
+summary(SAcon3v4)
+summary(SAcon3v5)
+
+
+```
+
+# **Generalized linear models**
+
+## Experiment 1
+
+```{r message=FALSE, results='hide', error=FALSE}
+
+lm1 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = POS7v9) 
+summary(lm1)
+lm2 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = POS11v9) 
+summary(lm2)
+lm3 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = POS13v15) 
+summary(lm3)
+lm4 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = NEG7v9) 
+summary(lm4)
+lm5 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = NEG11v9) 
+summary(lm5)
+lm6 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = NEG13v15) 
+summary(lm6)
+
+```
+
+### *Pooled dataset* 
+
+We use and report models using a pooled dataset (combining equal element size and equal surface area groups) as we found no statistically significant results in either condition
+
+```{r message=FALSE, error=FALSE}
+ 
+EXP1POOLED7v9 <-subset(PRIMEDATA, TEST == "7v9") 
+EXP1POOLED11v9 <-subset(PRIMEDATA, TEST == "11v9") 
+EXP1POOLED13v15 <-subset(PRIMEDATA, TEST == "13v15") 
+
+lm7 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXP1POOLED7v9) 
+summary(lm7)
+lm8 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXP1POOLED11v9) 
+summary(lm8)
+lm9 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXP1POOLED13v15) 
+summary(lm9)
+
+```
+
+
+### *Confidence intervals*
+
+```{r results='hide', message=FALSE, error=FALSE, warning=FALSE}
+
+confint(lm7)
+EXP1_7v9confintlow <-(exp(-0.3941168)/(1 + exp( -0.3941168)))
+EXP1_7v9confinthigh <-(exp(0.5825354)/(1 + exp(0.5825354)))
+confint(lm8)
+EXP1_11v9confintlow <-(exp(-0.1001439)/(1 + exp(-0.1001439)))
+EXP1_11v9confinthigh <-(exp(0.5160843)/(1 + exp(0.5160843)))
+confint(lm9)
+EXP1_13v15confintlow <-(exp(-0.3178457)/(1 + exp(-0.3178457)))
+EXP1_13v15confinthigh <-(exp(0.2373101)/(1 + exp(0.2373101)))
+
+```
+
+## Experiment 2
+
+```{r results='hide', error=FALSE, message=FALSE}
+
+lm10 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = POS7v9_GRP) 
+summary(lm10)
+lm11 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = POS11v9_GRP) 
+summary(lm11)
+lm12 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = POS13v15_GRP) 
+summary(lm12)
+lm13 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = POSCONT_GRP) 
+summary(lm13)
+
+lm14 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = NEG7v9_GRP) 
+summary(lm14)
+lm15 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = NEG11v9_GRP) 
+summary(lm15)
+lm16 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = NEG13v15_GRP) 
+summary(lm16)
+lm17 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = NEGCONT_GRP) 
+summary(lm17)
+
+```
+
+### *Pooled dataset*
+
+We use and report models using a pooled dataset (combining equal element size and equal surface area groups) as we found no statistically significant results in either condition
+
+```{r message=FALSE, error=FALSE}
+
+EXP2POOLED7v9 <-subset(PRIMEGRP, TEST == "7v9") 
+EXP2POOLED11v9 <-subset(PRIMEGRP, TEST == "11v9") 
+EXP2POOLED13v15 <-subset(PRIMEGRP, TEST == "13v15") 
+EXP2POOLEDNEGCONT <-subset(PRIMEGRP, TEST == "control") 
+
+lm18 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXP2POOLED7v9) 
+summary(lm18)
+lm19 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXP2POOLED11v9) 
+summary(lm19)
+lm20 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXP2POOLED13v15) 
+summary(lm20)
+lm21<-glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXP2POOLEDNEGCONT) 
+summary(lm21)
+
+```
+
+
+### *Confidence intervals*
+
+```{r results='hide', error=FALSE, warning=FALSE, message=FALSE}
+
+confint(lm18)
+EXP2_7v9confintlow <-(exp(-0.04782218)/(1 + exp(-0.04782218)))
+EXP2_7v9confinthigh <-(exp(0.5434547)/(1 + exp(0.5434547)))
+confint(lm19)
+EXP2_11v9confintlow <-(exp(-0.197514)/(1 + exp(-0.197514)))
+EXP2_11v9confinthigh <-(exp(0.3590998)/(1 + exp(0.3590998)))
+confint(lm20)
+EXP2_13v15confintlow <-(exp(-0.4808859)/(1 + exp(-0.4808859)))
+EXP2_13v15confinthigh <-(exp(0.07708543)/(1 + exp(0.07708543)))
+confint(lm21)
+EXP2_NEGCONTconfintlow <-(exp(-0.3787003)/(1 + exp(-0.3787003)))
+EXP2_NEGCONTconfinthigh <-(exp(0.1772473)/(1 + exp(0.1772473)))
+
+```
+
+## Control experiment
+
+```{r message=FALSE, error=FALSE}
+
+clm1 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EEcon3v1) 
+summary(clm1)
+clm2 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EEcon3v2) 
+summary(clm2)
+clm3 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EEcon3v4) 
+summary(clm3)
+clm4 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EEcon3v5) 
+summary(clm4)
+clm5 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = SAcon3v1) 
+summary(clm5)
+clm6 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = SAcon3v2) 
+summary(clm6)
+clm7 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = SAcon3v4) 
+summary(clm7)
+clm8 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = SAcon3v5) 
+summary(clm8)
+
+
+```
+
+### *Confidence intervals*
+
+
+```{r results='hide', error=FALSE, message=FALSE, warning=FALSE}
+
+confint(clm1)
+EE3v1confintlow <-(exp(0.3592665)/(1 + exp(0.3592665)))
+EE3v1confinthigh <-(exp(1.2555766)/(1 + exp(1.2555766)))
+confint(clm2)
+EE3v2confintlow <-(exp(-0.632105)/(1 + exp(-0.632105)))
+EE3v2confinthigh <-(exp(0.6466399)/(1 + exp(0.6466399)))
+confint(clm3)
+EE3v4confintlow <-(exp(-0.408491)/(1 + exp(-0.408491)))
+EE3v4confinthigh <-(exp(0.5026474)/(1 + exp(0.5026474)))
+confint(clm4)
+EE3v5confintlow <-(exp(-0.3296674)/(1 + exp(-0.3296674)))
+EE3v5confinthigh <-(exp(0.7213893)/(1 + exp(0.7213893)))
+
+confint(clm5)
+SA3v1confintlow <-(exp(-0.1827046)/(1 + exp(-0.1827046)))
+SA3v1confinthigh <-(exp(0.7875859)/(1 + exp(0.7875859)))
+confint(clm6)
+SA3v2confintlow <-(exp(-0.6834336)/(1 + exp(-0.6834336)))
+SA3v2confinthigh <-(exp(0.7978965)/(1 + exp(0.7978965)))
+confint(clm7)
+SA3v4confintlow <-(exp(-0.2441276)/(1 + exp(-0.2441276)))
+SA3v4confinthigh <-(exp(0.5751515)/(1 + exp(0.5751515)))
+confint(clm8)
+SA3v5confintlow <-(exp(-0.6521079)/(1 + exp(-0.6521079)))
+SA3v5confinthigh <-(exp(0.3092899)/(1 + exp(0.3092899)))
+```
+
+
+# **Figures**
+
+```{r message=FALSE, results='hide', error=FALSE}
+
+# Create dataframe for experiment 1 bargraph
+
+dframe <- data.frame(Test = rep(c("7v9", "11v9", "13v15")),
+                     proportion = c(0.52,0.55,0.49),
+                     confintlow = c(EXP1_7v9confintlow,EXP1_11v9confintlow,EXP1_13v15confintlow),
+                     confinthigh = c(EXP1_7v9confinthigh,EXP1_11v9confinthigh,EXP1_13v15confinthigh))
+
+
+exp1points <- PRIMEDATA %>%   # calculate mean of each block for each bee
+  group_by(BEEID, TEST, CONDITION) %>% 
+  summarize(prop = mean(CHOICE)) 
+
+
+# Create dataframe for experiment 2 bargraph
+
+dframe2 <- data.frame(Test = rep(c("7v9", "11v9", "13v15","control")), 
+                     proportion = c(0.56,0.52,0.45,0.475),
+                     confintlow = c(EXP2_7v9confintlow,EXP2_11v9confintlow,EXP2_13v15confintlow,EXP2_NEGCONTconfintlow),
+                     confinthigh = c(EXP2_7v9confinthigh,EXP2_11v9confinthigh,EXP2_13v15confinthigh,EXP2_NEGCONTconfinthigh))
+
+exp2points <- PRIMEGRP %>%   # calculate mean of each block for each bee
+  group_by(BEEID, TEST, CONDITION) %>% 
+  summarize(prop = mean(CHOICE))
+
+
+# Create dataframe for control experiment bargraph
+
+dframecon <- data.frame(Test = rep(c("3v1", "3v2","3v4","3v5"), each = 2), 
+                    Condition = rep(c("EE", "SA"), times = 4),
+                    proportion = c(0.6889, 0.57, 0.5, 0.51, 0.5111, 0.54, 0.5444, 0.46),
+                     confintlow = c(EE3v1confintlow, SA3v1confintlow, EE3v2confintlow, SA3v2confintlow, EE3v4confintlow, SA3v4confintlow, EE3v5confintlow, SA3v5confintlow),
+                     confinthigh = c(EE3v1confinthigh, SA3v1confinthigh, EE3v2confinthigh, SA3v2confinthigh, EE3v4confinthigh, SA3v4confinthigh, EE3v5confinthigh, SA3v5confinthigh))
+
+
+controlpoints <- CONTROL %>%   # calculate mean of each block for each bee
+  group_by(BEEID, TEST, CONDITION) %>% 
+  summarize(prop = mean(CHOICE)) 
+
+              
+# Generate bargraph for experiment 1 
+
+exp1graph <- ggplot()+
+  labs (x= "Condition", y = "Mean proportion of correct choices") +
+  geom_bar(data = dframe, aes(x = Test, y = proportion, fill = Test), stat = "identity", position = "dodge") + 
+   geom_point(data = exp1points, aes(x = TEST, y = prop), position = position_jitter(width=0.1), size =0.7, colour="dark grey") +
+  geom_errorbar(data= dframe, aes(x = Test, y = proportion, ymin = confintlow, ymax = confinthigh), width=.2, position=position_dodge(.9)) +
+  geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
+  scale_fill_manual(values = wes_palette("GrandBudapest2", n = 3)) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1, suffix = NULL)) +
+  scale_x_discrete(labels=c("7v9" = "7 vs 9", "11v9" = "11 vs 9", "13v15" = "13 vs 15"))+
+  theme(panel.background = element_blank(),
+        axis.line = element_line(colour = "black"),
+        aspect.ratio = 1/1, 
+        axis.title.y = element_text(vjust = 5),
+        axis.title.x = element_text(vjust = -3))
+
+# Generate bargraph for experiment 2
+
+exp2graph <- ggplot()+
+  labs (x= "Condition", y = "Mean proportion of correct choices") +
+  geom_bar(data = dframe2, aes(x = Test, y = proportion, fill = Test), stat = "identity", position = "dodge") + 
+   geom_point(data = exp2points, aes(x = TEST, y = prop), position = position_jitter(width=0.1), size =0.7, colour="dark grey") +
+  geom_errorbar(data= dframe2, aes(x = Test, y = proportion, ymin = confintlow, ymax = confinthigh), width=.2, position=position_dodge(.9)) +
+  geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
+  scale_fill_manual(values = wes_palette("GrandBudapest2", n = 4)) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1, suffix = NULL)) +
+  scale_x_discrete(labels=c("7v9" = "7 vs 9", "11v9" = "11 vs 9", "13v15" = "13 vs 15", "control" = "control"))+
+  theme(panel.background = element_blank(),
+        axis.line = element_line(colour = "black"),
+        aspect.ratio = 1/1, 
+        axis.title.y = element_text(vjust = 5),
+        axis.title.x = element_text(vjust = -3))
+
+# Generate bargraph for control experiment
+
+congraph <- ggplot()+
+  labs (x= "Condition", y = "Mean proportion of correct choices") +
+  geom_bar(data = dframecon, aes(x = Test, y = proportion, fill = Condition), stat = "identity", position = "dodge") + 
+  geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
+  geom_point(data = controlpoints, aes(x = TEST, y = prop, fill = CONDITION), position = position_jitterdodge(jitter.width=0.2, jitter.height = 0.01, dodge.width = 0.9),       show.legend = FALSE, size =0.5, colour="dark grey") +
+  scale_fill_manual(values = wes_palette("GrandBudapest2", n = 2)) +
+  geom_errorbar(data= dframecon, aes(x = Test, y = proportion, ymin = confintlow, ymax = confinthigh, group = Condition), width=.15, position=position_dodge(.9)) +
+  geom_text(data= dframecon, x =0.775, y = 0.82, label ="*", size =6) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1, suffix = NULL))+
+  theme(panel.background = element_blank(),
+        axis.line = element_line(colour = "black"),
+        aspect.ratio = 1/1,
+        plot.margin = margin(0.3,0.3,0.1,0.4, "cm"))
+
+```
+
+## Generate Figure x
+
+```{r message=FALSE}
+figx <- exp1graph + exp2graph
+figx
+ggsave("figx.pdf", device = pdf, height= 4, width=10, dpi = 300, path = "Output")
+congraph
+ggsave("figx2.pdf", device = pdf, height= 5, width=6, dpi = 300, path = "Output")
+```
+
+
+```{r eval=FALSE}
+figx + plot_annotation(tag_levels = "A")
+ggsave("figx.pdf", device = pdf, height= 4, width=10, dpi = 300, path = "Output")
+ggsave("figx.png", device = png, height= 4, width=10, dpi = 300, path = "Output")
+congraph
+ggsave("figx2.pdf", device = pdf, height= 5, width=6, dpi = 300, path = "Output")
+ggsave("figx2.png", device = png, height= 5, width=6, dpi = 300, path = "Output")
+
+```
+
