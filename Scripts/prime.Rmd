@@ -33,7 +33,7 @@ knitr::opts_chunk$set(error = TRUE)
 # **Introduction**
 
 
-In this document we tested if free-flying honey bees that are habituated to even composite numbers spontaneously discriminate an odd prime number from an odd composite number. This document provides details on data processing, statistical analysis and figures of the original manuscript submitted for peer review (titled: "xxx").
+In this document we tested if free-flying honey bees that are habituated to even composite numbers spontaneously discriminate an odd prime number from an odd composite number. This document provides details on data processing, statistical analysis and figures of the original manuscript submitted for peer review (titled: "Exploring categorisation of prime and composite quantities in honeybees using perceptual grouping").
 
 The following code is written in the R programming language.
 
