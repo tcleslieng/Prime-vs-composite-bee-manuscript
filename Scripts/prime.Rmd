@@ -1,7 +1,7 @@
 ---
 title: "Exploring categorisation of symmetrical/asymmetrical quantities in honeybees using perceptual grouping"
 author: "Leslie Ng and Scarlett Howard"
-date: "04-07-2023"
+date: "25-07-2024"
 output:
   html_document:
    toc: yes
@@ -80,6 +80,9 @@ PRIMEGRP <- read.csv(
 CONTROL <- read.csv(
   "../Data/control_data.csv", header=TRUE)
 
+TRAINING <- read.csv(
+  "../Data/training_data.csv", header=TRUE)
+
 #Subset Prime data 
 
 PRIMEDATA$BEEID <- as.factor(PRIMEDATA$BEEID) # Treat Bee ID as factor
@@ -144,6 +147,18 @@ summary(SAcon3v2)
 summary(SAcon3v4)
 summary(SAcon3v5)
 
+#Subset training data
+
+TRAINING$BEEID <- as.factor(TRAINING$BEEID) # Treat Bee ID as factor
+TRAINING$CONDITION <- as.factor(TRAINING$CONDITION)
+summary(TRAINING)
+
+
+Training_learningtest <- subset(TRAINING, CONDITION == "Learning")
+Training_7v9test <- subset(TRAINING, CONDITION == "7v9") 
+Training_7v8test <-subset(TRAINING, CONDITION == "7v8")  
+
+summary(TRAINING)
 
 ```
 
@@ -326,6 +341,35 @@ SA3v5confintlow <-(exp(-0.6521079)/(1 + exp(-0.6521079)))
 SA3v5confinthigh <-(exp(0.3092899)/(1 + exp(0.3092899)))
 ```
 
+## Training experiment
+
+```{r message=FALSE, error=FALSE}
+
+tlm1 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = Training_learningtest) 
+summary(tlm1)
+tlm2 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = Training_7v9test) 
+summary(tlm2)
+tlm3 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = Training_7v8test) 
+summary(tlm3)
+
+
+```
+
+### *Confidence intervals*
+
+```{r results='hide', error=FALSE, message=FALSE, warning=FALSE}
+
+confint(tlm1)
+traininglearningconfintlow <-(exp(-0.311725)/(1 + exp(-0.311725)))
+traininglearningconfinthigh <-(exp(0.3117250)/(1 + exp(0.3117250)))
+confint(tlm2)
+training7v9confintlow <-(exp(-0.1166512)/(1 + exp(-0.1166512)))
+training7v9confinthigh <-(exp(0.5277194)/(1 + exp(0.5277194)))
+confint(tlm3)
+training7v8confintlow <-(exp(-0.2557725)/(1 + exp(-0.2557725)))
+training7v8confinthigh <-(exp(0.5267269)/(1 + exp(0.5267269)))
+```
+
 
 # **Figures**
 
@@ -369,13 +413,32 @@ controlpoints <- CONTROL %>%   # calculate mean of each block for each bee
   group_by(BEEID, TEST, CONDITION) %>% 
   summarize(prop = mean(CHOICE)) 
 
+
+# Create dataframe for training experiment
+
+dframetrn <- data.frame(Test = rep(c("Learning", "7v9","7v8")), #create dataframe
+                        proportion = c(0.5, 0.55, 0.53),
+                        confintlow = c(traininglearningconfintlow, training7v9confintlow, training7v8confintlow),
+                        confinthigh = c(traininglearningconfinthigh, training7v9confinthigh, training7v8confinthigh))
+
+trainingpoints <- TRAINING %>%   # calculate mean of each block for each bee
+  group_by(BEEID, CONDITION) %>% 
+  summarize(prop = mean(CHOICE))
+
+levels(trainingpoints$CONDITION) # view the existing order of factors in the trainingpoints
+trainingpoints$CONDITION <- factor(trainingpoints$CONDITION, levels=c('Learning', '7v9', '7v8')) # set the order of your factors as you wish
+levels(trainingpoints$CONDITION) # check to view the change
+
+
+dframetrn$Test <- factor(dframetrn$Test, levels = c('Learning', '7v9', '7v8')) 
+dframetrn$Test # check to view the change
               
 # Generate bargraph for experiment 1 
 
 exp1graph <- ggplot()+
   labs (x= "Condition", y = "Mean proportion of choices") +
   geom_bar(data = dframe, aes(x = Test, y = proportion, fill = Test), stat = "identity", position = "dodge") + 
-   geom_point(data = exp1points, aes(x = TEST, y = prop), position = position_jitter(width=0.1), size =0.7, colour="dark grey") +
+   geom_point(data = exp1points, aes(x = TEST, y = prop), position = position_jitter(width=0.1), size =0.5, colour="black") +
   geom_errorbar(data= dframe, aes(x = Test, y = proportion, ymin = confintlow, ymax = confinthigh), width=.2, position=position_dodge(.9)) +
   geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
   scale_fill_manual(values = wes_palette("GrandBudapest2", n = 3)) +
@@ -392,7 +455,7 @@ exp1graph <- ggplot()+
 exp2graph <- ggplot()+
   labs (x= "Condition", y = "Mean proportion of choices") +
   geom_bar(data = dframe2, aes(x = Test, y = proportion, fill = Test), stat = "identity", position = "dodge") + 
-   geom_point(data = exp2points, aes(x = TEST, y = prop), position = position_jitter(width=0.1), size =0.7, colour="dark grey") +
+   geom_point(data = exp2points, aes(x = TEST, y = prop), position = position_jitter(width=0.1), size =0.5, colour="black") +
   geom_errorbar(data= dframe2, aes(x = Test, y = proportion, ymin = confintlow, ymax = confinthigh), width=.2, position=position_dodge(.9)) +
   geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
   scale_fill_manual(values = wes_palette("GrandBudapest2", n = 4)) +
@@ -410,7 +473,7 @@ congraph <- ggplot()+
   labs (x= "Condition", y = "Mean proportion of choices") +
   geom_bar(data = dframecon, aes(x = Test, y = proportion, fill = Condition), stat = "identity", position = "dodge") + 
   geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
-  geom_point(data = controlpoints, aes(x = TEST, y = prop, fill = CONDITION), position = position_jitterdodge(jitter.width=0.2, jitter.height = 0.01, dodge.width = 0.9),       show.legend = FALSE, size =0.5, colour="dark grey") +
+  geom_point(data = controlpoints, aes(x = TEST, y = prop, fill = CONDITION), position = position_jitterdodge(jitter.width=0.2, jitter.height = 0.01, dodge.width = 0.9),       show.legend = FALSE, size =1, colour="black") +
   scale_fill_manual(values = wes_palette("GrandBudapest2", n = 2)) +
   geom_errorbar(data= dframecon, aes(x = Test, y = proportion, ymin = confintlow, ymax = confinthigh, group = Condition), width=.15, position=position_dodge(.9)) +
   geom_text(data= dframecon, x =0.775, y = 0.82, label ="*", size =6) +
@@ -420,6 +483,21 @@ congraph <- ggplot()+
         aspect.ratio = 1/1,
         plot.margin = margin(0.3,0.3,0.1,0.4, "cm"))
 
+# Generate bargraph for training experiment
+
+trngraph <- ggplot()+
+  labs (x= "Condition", y = "Mean proportion of choices") +
+  geom_bar(data = dframetrn, aes(x = Test, y = proportion, fill = Test), stat = "identity", position = "dodge") + 
+   geom_point(data = trainingpoints, aes(x = CONDITION, y = prop), position = position_jitter(width=0.1), size =1, colour="black") +
+  geom_errorbar(data= dframetrn, aes(x = Test, y = proportion, ymin = confintlow, ymax = confinthigh), width=.2, position=position_dodge(.9)) +
+  geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
+  scale_fill_manual(values = wes_palette("GrandBudapest2", n = 3)) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1, suffix = NULL)) +
+  theme(panel.background = element_blank(),
+        axis.line = element_line(colour = "black"),
+        aspect.ratio = 1/1, 
+        axis.title.y = element_text(vjust = 5),
+        axis.title.x = element_text(vjust = -3))
 ```
 
 ## Generate Figure x
@@ -430,6 +508,8 @@ figx
 ggsave("figx.pdf", device = pdf, height= 4, width=10, dpi = 300, path = "Output")
 congraph
 ggsave("figx2.pdf", device = pdf, height= 5, width=6, dpi = 300, path = "Output")
+trngraph
+ggsave("figx.pdf", device = pdf, height= 5, width=6, dpi = 300, path = "Output")
 ```
 
 
@@ -439,6 +519,7 @@ ggsave("figx.pdf", device = pdf, height= 4, width=10, dpi = 300, path = "Output"
 ggsave("figx.png", device = png, height= 4, width=10, dpi = 300, path = "Output")
 congraph
 ggsave("figx2.pdf", device = pdf, height= 5, width=6, dpi = 300, path = "Output")
+trngraph
 ggsave("figx2.png", device = png, height= 5, width=6, dpi = 300, path = "Output")
 
 ```

@@ -1,0 +1,481 @@
+BEEID,CHOICE,NUMBER,SHAPE,CONDITION,STIMULI
+1,0,5 v 6,Square,Learning,EE
+1,1,5 v 6,Square,Learning,EE
+1,1,5 v 6,Square,Learning,EE
+1,1,5 v 6,Square,Learning,EE
+1,1,5 v 6,Square,Learning,EE
+1,1,5 v 6,Square,Learning,EE
+1,1,5 v 6,Square,Learning,EE
+1,0,5 v 6,Square,Learning,EE
+1,1,5 v 6,Square,Learning,EE
+1,0,5 v 6,Square,Learning,EE
+2,1,5 v 10,Triangle,Learning,SA
+2,0,5 v 10,Triangle,Learning,SA
+2,0,5 v 10,Triangle,Learning,SA
+2,1,5 v 10,Triangle,Learning,SA
+2,1,5 v 10,Triangle,Learning,SA
+2,0,5 v 10,Triangle,Learning,SA
+2,1,5 v 10,Triangle,Learning,SA
+2,0,5 v 10,Triangle,Learning,SA
+2,1,5 v 10,Triangle,Learning,SA
+2,0,5 v 10,Triangle,Learning,SA
+3,1,4 v 11,Triangle,Learning,SA
+3,1,4 v 11,Triangle,Learning,SA
+3,1,4 v 11,Triangle,Learning,SA
+3,1,4 v 11,Triangle,Learning,SA
+3,0,4 v 11,Triangle,Learning,SA
+3,0,4 v 11,Triangle,Learning,SA
+3,1,4 v 11,Triangle,Learning,SA
+3,1,4 v 11,Triangle,Learning,SA
+3,1,4 v 11,Triangle,Learning,SA
+3,1,4 v 11,Triangle,Learning,SA
+4,0,3 v 10,Square,Learning,EE
+4,0,3 v 10,Square,Learning,EE
+4,1,3 v 10,Square,Learning,EE
+4,0,3 v 10,Square,Learning,EE
+4,1,3 v 10,Square,Learning,EE
+4,1,3 v 10,Square,Learning,EE
+4,0,3 v 10,Square,Learning,EE
+4,0,3 v 10,Square,Learning,EE
+4,1,3 v 10,Square,Learning,EE
+4,1,3 v 10,Square,Learning,EE
+5,1,5 v 6,Triangle,Learning,EE
+5,1,5 v 6,Triangle,Learning,EE
+5,1,5 v 6,Triangle,Learning,EE
+5,0,5 v 6,Triangle,Learning,EE
+5,0,5 v 6,Triangle,Learning,EE
+5,0,5 v 6,Triangle,Learning,EE
+5,0,5 v 6,Triangle,Learning,EE
+5,1,5 v 6,Triangle,Learning,EE
+5,1,5 v 6,Triangle,Learning,EE
+5,0,5 v 6,Triangle,Learning,EE
+6,1,4 v 11,Triangle,Learning,SA
+6,1,4 v 11,Triangle,Learning,SA
+6,0,4 v 11,Triangle,Learning,SA
+6,0,4 v 11,Triangle,Learning,SA
+6,0,4 v 11,Triangle,Learning,SA
+6,0,4 v 11,Triangle,Learning,SA
+6,1,4 v 11,Triangle,Learning,SA
+6,1,4 v 11,Triangle,Learning,SA
+6,0,4 v 11,Triangle,Learning,SA
+6,0,4 v 11,Triangle,Learning,SA
+7,0,6 v 11,Circle,Learning,SA
+7,1,6 v 11,Circle,Learning,SA
+7,1,6 v 11,Circle,Learning,SA
+7,1,6 v 11,Circle,Learning,SA
+7,1,6 v 11,Circle,Learning,SA
+7,0,6 v 11,Circle,Learning,SA
+7,0,6 v 11,Circle,Learning,SA
+7,0,6 v 11,Circle,Learning,SA
+7,1,6 v 11,Circle,Learning,SA
+7,1,6 v 11,Circle,Learning,SA
+8,0,5 v 10,Triangle,Learning,EE
+8,1,5 v 10,Triangle,Learning,EE
+8,1,5 v 10,Triangle,Learning,EE
+8,1,5 v 10,Triangle,Learning,EE
+8,0,5 v 10,Triangle,Learning,EE
+8,1,5 v 10,Triangle,Learning,EE
+8,1,5 v 10,Triangle,Learning,EE
+8,0,5 v 10,Triangle,Learning,EE
+8,1,5 v 10,Triangle,Learning,EE
+8,0,5 v 10,Triangle,Learning,EE
+9,0,6 v 11,Triangle,Learning,EE
+9,0,6 v 11,Triangle,Learning,EE
+9,0,6 v 11,Triangle,Learning,EE
+9,1,6 v 11,Triangle,Learning,EE
+9,1,6 v 11,Triangle,Learning,EE
+9,0,6 v 11,Triangle,Learning,EE
+9,1,6 v 11,Triangle,Learning,EE
+9,0,6 v 11,Triangle,Learning,EE
+9,1,6 v 11,Triangle,Learning,EE
+9,0,6 v 11,Triangle,Learning,EE
+10,0,10 v 11,Square,Learning,SA
+10,1,10 v 11,Square,Learning,SA
+10,1,10 v 11,Square,Learning,SA
+10,0,10 v 11,Square,Learning,SA
+10,1,10 v 11,Square,Learning,SA
+10,1,10 v 11,Square,Learning,SA
+10,1,10 v 11,Square,Learning,SA
+10,0,10 v 11,Square,Learning,SA
+10,1,10 v 11,Square,Learning,SA
+10,0,10 v 11,Square,Learning,SA
+11,1,6 v 13,Square,Learning,SA
+11,0,6 v 13,Square,Learning,SA
+11,0,6 v 13,Square,Learning,SA
+11,0,6 v 13,Square,Learning,SA
+11,1,6 v 13,Square,Learning,SA
+11,0,6 v 13,Square,Learning,SA
+11,1,6 v 13,Square,Learning,SA
+11,0,6 v 13,Square,Learning,SA
+11,0,6 v 13,Square,Learning,SA
+11,0,6 v 13,Square,Learning,SA
+12,1,6 v 11,Circle,Learning,EE
+12,1,6 v 11,Circle,Learning,EE
+12,0,6 v 11,Circle,Learning,EE
+12,0,6 v 11,Circle,Learning,EE
+12,1,6 v 11,Circle,Learning,EE
+12,0,6 v 11,Circle,Learning,EE
+12,1,6 v 11,Circle,Learning,EE
+12,0,6 v 11,Circle,Learning,EE
+12,1,6 v 11,Circle,Learning,EE
+12,0,6 v 11,Circle,Learning,EE
+13,0,10 v 13,Circle,Learning,EE
+13,1,10 v 13,Circle,Learning,EE
+13,0,10 v 13,Circle,Learning,EE
+13,1,10 v 13,Circle,Learning,EE
+13,0,10 v 13,Circle,Learning,EE
+13,0,10 v 13,Circle,Learning,EE
+13,1,10 v 13,Circle,Learning,EE
+13,1,10 v 13,Circle,Learning,EE
+13,0,10 v 13,Circle,Learning,EE
+13,1,10 v 13,Circle,Learning,EE
+14,0,3 v 10,Triangle,Learning,SA
+14,0,3 v 10,Triangle,Learning,SA
+14,0,3 v 10,Triangle,Learning,SA
+14,1,3 v 10,Triangle,Learning,SA
+14,0,3 v 10,Triangle,Learning,SA
+14,1,3 v 10,Triangle,Learning,SA
+14,0,3 v 10,Triangle,Learning,SA
+14,0,3 v 10,Triangle,Learning,SA
+14,0,3 v 10,Triangle,Learning,SA
+14,0,3 v 10,Triangle,Learning,SA
+15,1,3 v 6,Circle,Learning,EE
+15,0,3 v 6,Circle,Learning,EE
+15,0,3 v 6,Circle,Learning,EE
+15,0,3 v 6,Circle,Learning,EE
+15,1,3 v 6,Circle,Learning,EE
+15,0,3 v 6,Circle,Learning,EE
+15,0,3 v 6,Circle,Learning,EE
+15,1,3 v 6,Circle,Learning,EE
+15,0,3 v 6,Circle,Learning,EE
+15,1,3 v 6,Circle,Learning,EE
+16,1,5 v 12,Square,Learning,SA
+16,1,5 v 12,Square,Learning,SA
+16,0,5 v 12,Square,Learning,SA
+16,1,5 v 12,Square,Learning,SA
+16,0,5 v 12,Square,Learning,SA
+16,1,5 v 12,Square,Learning,SA
+16,0,5 v 12,Square,Learning,SA
+16,0,5 v 12,Square,Learning,SA
+16,1,5 v 12,Square,Learning,SA
+16,0,5 v 12,Square,Learning,SA
+1,1,7,NA,7v9,EE
+1,1,7,NA,7v9,EE
+1,0,9,NA,7v9,EE
+1,0,9,NA,7v9,EE
+1,0,9,NA,7v9,EE
+1,1,7,NA,7v9,EE
+1,1,7,NA,7v9,EE
+1,0,9,NA,7v9,EE
+1,0,9,NA,7v9,EE
+1,0,9,NA,7v9,EE
+2,0,9,NA,7v9,SA
+2,1,7,NA,7v9,SA
+2,1,7,NA,7v9,SA
+2,0,9,NA,7v9,SA
+2,0,9,NA,7v9,SA
+2,1,7,NA,7v9,SA
+2,0,9,NA,7v9,SA
+2,1,7,NA,7v9,SA
+2,0,9,NA,7v9,SA
+2,0,9,NA,7v9,SA
+3,0,9,NA,7v9,SA
+3,0,9,NA,7v9,SA
+3,0,9,NA,7v9,SA
+3,1,7,NA,7v9,SA
+3,1,7,NA,7v9,SA
+3,1,7,NA,7v9,SA
+3,0,9,NA,7v9,SA
+3,1,7,NA,7v9,SA
+3,0,9,NA,7v9,SA
+3,1,7,NA,7v9,SA
+4,1,7,NA,7v9,EE
+4,0,9,NA,7v9,EE
+4,0,9,NA,7v9,EE
+4,0,9,NA,7v9,EE
+4,1,7,NA,7v9,EE
+4,1,7,NA,7v9,EE
+4,0,9,NA,7v9,EE
+4,0,9,NA,7v9,EE
+4,1,7,NA,7v9,EE
+4,0,9,NA,7v9,EE
+5,1,7,NA,7v9,EE
+5,0,9,NA,7v9,EE
+5,1,7,NA,7v9,EE
+5,1,7,NA,7v9,EE
+5,1,7,NA,7v9,EE
+5,0,9,NA,7v9,EE
+5,0,9,NA,7v9,EE
+5,1,7,NA,7v9,EE
+5,0,9,NA,7v9,EE
+5,1,7,NA,7v9,EE
+6,0,9,NA,7v9,SA
+6,1,7,NA,7v9,SA
+6,1,7,NA,7v9,SA
+6,1,7,NA,7v9,SA
+6,1,7,NA,7v9,SA
+6,1,7,NA,7v9,SA
+6,0,9,NA,7v9,SA
+6,1,7,NA,7v9,SA
+6,1,7,NA,7v9,SA
+6,0,9,NA,7v9,SA
+7,1,7,NA,7v9,SA
+7,1,7,NA,7v9,SA
+7,1,7,NA,7v9,SA
+7,1,7,NA,7v9,SA
+7,0,9,NA,7v9,SA
+7,0,9,NA,7v9,SA
+7,0,9,NA,7v9,SA
+7,0,9,NA,7v9,SA
+7,1,7,NA,7v9,SA
+7,1,7,NA,7v9,SA
+8,1,7,NA,7v9,EE
+8,1,7,NA,7v9,EE
+8,1,7,NA,7v9,EE
+8,0,9,NA,7v9,EE
+8,0,9,NA,7v9,EE
+8,1,7,NA,7v9,EE
+8,0,9,NA,7v9,EE
+8,1,7,NA,7v9,EE
+8,0,9,NA,7v9,EE
+8,1,7,NA,7v9,EE
+9,1,7,NA,7v9,EE
+9,1,7,NA,7v9,EE
+9,1,7,NA,7v9,EE
+9,1,7,NA,7v9,EE
+9,1,7,NA,7v9,EE
+9,0,9,NA,7v9,EE
+9,0,9,NA,7v9,EE
+9,1,7,NA,7v9,EE
+9,1,7,NA,7v9,EE
+9,1,7,NA,7v9,EE
+10,0,9,NA,7v9,SA
+10,1,7,NA,7v9,SA
+10,1,7,NA,7v9,SA
+10,1,7,NA,7v9,SA
+10,1,7,NA,7v9,SA
+10,1,7,NA,7v9,SA
+10,0,9,NA,7v9,SA
+10,1,7,NA,7v9,SA
+10,0,9,NA,7v9,SA
+10,1,7,NA,7v9,SA
+11,1,7,NA,7v9,SA
+11,1,7,NA,7v9,SA
+11,1,7,NA,7v9,SA
+11,1,7,NA,7v9,SA
+11,1,7,NA,7v9,SA
+11,1,7,NA,7v9,SA
+11,0,9,NA,7v9,SA
+11,0,9,NA,7v9,SA
+11,0,9,NA,7v9,SA
+11,0,9,NA,7v9,SA
+12,1,7,NA,7v9,EE
+12,0,9,NA,7v9,EE
+12,0,9,NA,7v9,EE
+12,1,7,NA,7v9,EE
+12,0,9,NA,7v9,EE
+12,0,9,NA,7v9,EE
+12,0,9,NA,7v9,EE
+12,0,9,NA,7v9,EE
+12,1,7,NA,7v9,EE
+12,0,9,NA,7v9,EE
+13,0,9,NA,7v9,EE
+13,1,7,NA,7v9,EE
+13,0,9,NA,7v9,EE
+13,1,7,NA,7v9,EE
+13,0,9,NA,7v9,EE
+13,1,7,NA,7v9,EE
+13,0,9,NA,7v9,EE
+13,1,7,NA,7v9,EE
+13,1,7,NA,7v9,EE
+13,1,7,NA,7v9,EE
+14,0,9,NA,7v9,SA
+14,0,9,NA,7v9,SA
+14,0,9,NA,7v9,SA
+14,0,9,NA,7v9,SA
+14,1,7,NA,7v9,SA
+14,1,7,NA,7v9,SA
+14,0,9,NA,7v9,SA
+14,0,9,NA,7v9,SA
+14,1,7,NA,7v9,SA
+14,1,7,NA,7v9,SA
+15,1,7,NA,7v9,EE
+15,1,7,NA,7v9,EE
+15,1,7,NA,7v9,EE
+15,1,7,NA,7v9,EE
+15,0,9,NA,7v9,EE
+15,1,7,NA,7v9,EE
+15,1,7,NA,7v9,EE
+15,0,9,NA,7v9,EE
+15,1,7,NA,7v9,EE
+15,1,7,NA,7v9,EE
+16,0,9,NA,7v9,SA
+16,0,9,NA,7v9,SA
+16,1,7,NA,7v9,SA
+16,0,9,NA,7v9,SA
+16,1,7,NA,7v9,SA
+16,1,7,NA,7v9,SA
+16,0,9,NA,7v9,SA
+16,0,9,NA,7v9,SA
+16,0,9,NA,7v9,SA
+16,1,7,NA,7v9,SA
+1,1,7,NA,7v8,EE
+1,1,7,NA,7v8,EE
+1,1,7,NA,7v8,EE
+1,1,7,NA,7v8,EE
+1,1,7,NA,7v8,EE
+1,1,7,NA,7v8,EE
+1,0,8,NA,7v8,EE
+1,0,8,NA,7v8,EE
+1,1,7,NA,7v8,EE
+1,0,8,NA,7v8,EE
+2,1,7,NA,7v8,SA
+2,0,8,NA,7v8,SA
+2,1,7,NA,7v8,SA
+2,1,7,NA,7v8,SA
+2,1,7,NA,7v8,SA
+2,0,8,NA,7v8,SA
+2,0,8,NA,7v8,SA
+2,1,7,NA,7v8,SA
+2,0,8,NA,7v8,SA
+2,1,7,NA,7v8,SA
+3,1,7,NA,7v8,SA
+3,0,8,NA,7v8,SA
+3,1,7,NA,7v8,SA
+3,1,7,NA,7v8,SA
+3,1,7,NA,7v8,SA
+3,0,8,NA,7v8,SA
+3,0,8,NA,7v8,SA
+3,0,8,NA,7v8,SA
+3,1,7,NA,7v8,SA
+3,0,8,NA,7v8,SA
+4,1,7,NA,7v8,EE
+4,0,8,NA,7v8,EE
+4,1,7,NA,7v8,EE
+4,1,7,NA,7v8,EE
+4,1,7,NA,7v8,EE
+4,1,7,NA,7v8,EE
+4,0,8,NA,7v8,EE
+4,1,7,NA,7v8,EE
+4,0,8,NA,7v8,EE
+4,1,7,NA,7v8,EE
+5,0,8,NA,7v8,EE
+5,0,8,NA,7v8,EE
+5,0,8,NA,7v8,EE
+5,1,7,NA,7v8,EE
+5,0,8,NA,7v8,EE
+5,0,8,NA,7v8,EE
+5,1,7,NA,7v8,EE
+5,1,7,NA,7v8,EE
+5,0,8,NA,7v8,EE
+5,0,8,NA,7v8,EE
+6,0,8,NA,7v8,SA
+6,0,8,NA,7v8,SA
+6,0,8,NA,7v8,SA
+6,0,8,NA,7v8,SA
+6,1,7,NA,7v8,SA
+6,1,7,NA,7v8,SA
+6,1,7,NA,7v8,SA
+6,0,8,NA,7v8,SA
+6,0,8,NA,7v8,SA
+6,1,7,NA,7v8,SA
+7,0,8,NA,7v8,SA
+7,0,8,NA,7v8,SA
+7,0,8,NA,7v8,SA
+7,0,8,NA,7v8,SA
+7,1,7,NA,7v8,SA
+7,0,8,NA,7v8,SA
+7,0,8,NA,7v8,SA
+7,1,7,NA,7v8,SA
+7,1,7,NA,7v8,SA
+7,0,8,NA,7v8,SA
+8,0,8,NA,7v8,EE
+8,0,8,NA,7v8,EE
+8,0,8,NA,7v8,EE
+8,0,8,NA,7v8,EE
+8,1,7,NA,7v8,EE
+8,1,7,NA,7v8,EE
+8,1,7,NA,7v8,EE
+8,0,8,NA,7v8,EE
+8,1,7,NA,7v8,EE
+8,0,8,NA,7v8,EE
+9,0,8,NA,7v8,EE
+9,0,8,NA,7v8,EE
+9,0,8,NA,7v8,EE
+9,1,7,NA,7v8,EE
+9,0,8,NA,7v8,EE
+9,1,7,NA,7v8,EE
+9,0,8,NA,7v8,EE
+9,1,7,NA,7v8,EE
+9,0,8,NA,7v8,EE
+9,1,7,NA,7v8,EE
+10,1,7,NA,7v8,SA
+10,1,7,NA,7v8,SA
+10,1,7,NA,7v8,SA
+10,1,7,NA,7v8,SA
+10,1,7,NA,7v8,SA
+10,0,8,NA,7v8,SA
+10,1,7,NA,7v8,SA
+10,1,7,NA,7v8,SA
+10,1,7,NA,7v8,SA
+10,1,7,NA,7v8,SA
+11,0,9,NA,7v8,SA
+11,0,9,NA,7v8,SA
+11,1,7,NA,7v8,SA
+11,0,9,NA,7v8,SA
+11,0,9,NA,7v8,SA
+11,1,7,NA,7v8,SA
+11,0,9,NA,7v8,SA
+11,0,9,NA,7v8,SA
+11,0,9,NA,7v8,SA
+11,1,7,NA,7v8,SA
+12,1,7,NA,7v8,EE
+12,1,7,NA,7v8,EE
+12,0,8,NA,7v8,EE
+12,1,7,NA,7v8,EE
+12,1,7,NA,7v8,EE
+12,0,8,NA,7v8,EE
+12,1,7,NA,7v8,EE
+12,1,7,NA,7v8,EE
+12,0,8,NA,7v8,EE
+12,1,7,NA,7v8,EE
+13,0,8,NA,7v8,EE
+13,1,7,NA,7v8,EE
+13,1,7,NA,7v8,EE
+13,0,8,NA,7v8,EE
+13,0,8,NA,7v8,EE
+13,1,7,NA,7v8,EE
+13,1,7,NA,7v8,EE
+13,0,8,NA,7v8,EE
+13,1,7,NA,7v8,EE
+13,0,8,NA,7v8,EE
+14,0,8,NA,7v8,SA
+14,0,8,NA,7v8,SA
+14,1,7,NA,7v8,SA
+14,0,8,NA,7v8,SA
+14,1,7,NA,7v8,SA
+14,0,8,NA,7v8,SA
+14,1,7,NA,7v8,SA
+14,1,7,NA,7v8,SA
+14,0,8,NA,7v8,SA
+14,1,7,NA,7v8,SA
+15,1,7,NA,7v8,EE
+15,1,7,NA,7v8,EE
+15,0,8,NA,7v8,EE
+15,1,7,NA,7v8,EE
+15,1,7,NA,7v8,EE
+15,1,7,NA,7v8,EE
+15,1,7,NA,7v8,EE
+15,0,8,NA,7v8,EE
+15,1,7,NA,7v8,EE
+15,1,7,NA,7v8,EE
+16,0,8,NA,7v8,SA
+16,0,8,NA,7v8,SA
+16,1,7,NA,7v8,SA
+16,1,7,NA,7v8,SA
+16,0,8,NA,7v8,SA
+16,0,8,NA,7v8,SA
+16,1,7,NA,7v8,SA
+16,1,7,NA,7v8,SA
+16,0,8,NA,7v8,SA
+16,1,7,NA,7v8,SA
