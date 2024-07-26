@@ -155,8 +155,14 @@ summary(TRAINING)
 
 
 Training_learningtest <- subset(TRAINING, CONDITION == "Learning")
+Training_learning_EE <- subset(TRAINING, STIMULI == "EE")
+Training_learning_SA <- subset(TRAINING, STIMULI == "SA")
+
 Training_7v9test <- subset(TRAINING, CONDITION == "7v9") 
+
+
 Training_7v8test <-subset(TRAINING, CONDITION == "7v8")  
+
 
 summary(TRAINING)
 
@@ -352,6 +358,8 @@ summary(tlm2)
 tlm3 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = Training_7v8test) 
 summary(tlm3)
 
+tlm4 <- glmer(CHOICE~ STIMULI + (1|BEEID), family = binomial, data = Training_learningtest) 
+summary(tlm4)
 
 ```
 
@@ -368,6 +376,9 @@ training7v9confinthigh <-(exp(0.5277194)/(1 + exp(0.5277194)))
 confint(tlm3)
 training7v8confintlow <-(exp(-0.2557725)/(1 + exp(-0.2557725)))
 training7v8confinthigh <-(exp(0.5267269)/(1 + exp(0.5267269)))
+confint(tlm4)
+training_stim_confintlow <-(exp(-0.7246346)/(1 + exp(-0.7246346)))
+training_stim_confinthigh <-(exp(0.5220422)/(1 + exp(0.5220422)))
 ```
 
 
@@ -473,10 +484,10 @@ congraph <- ggplot()+
   labs (x= "Condition", y = "Mean proportion of choices") +
   geom_bar(data = dframecon, aes(x = Test, y = proportion, fill = Condition), stat = "identity", position = "dodge") + 
   geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
-  geom_point(data = controlpoints, aes(x = TEST, y = prop, fill = CONDITION), position = position_jitterdodge(jitter.width=0.2, jitter.height = 0.01, dodge.width = 0.9),       show.legend = FALSE, size =1, colour="black") +
+  geom_point(data = controlpoints, aes(x = TEST, y = prop, fill = CONDITION), position = position_jitterdodge(jitter.width=0.2, jitter.height = 0.01, dodge.width = 0.9),       show.legend = FALSE, size =0.5, colour="black") +
   scale_fill_manual(values = wes_palette("GrandBudapest2", n = 2)) +
   geom_errorbar(data= dframecon, aes(x = Test, y = proportion, ymin = confintlow, ymax = confinthigh, group = Condition), width=.15, position=position_dodge(.9)) +
-  geom_text(data= dframecon, x =0.775, y = 0.82, label ="*", size =6) +
+  geom_text(data= dframecon, x =0.775, y = 0.83, label ="*", size =6) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1, suffix = NULL))+
   theme(panel.background = element_blank(),
         axis.line = element_line(colour = "black"),
@@ -503,13 +514,23 @@ trngraph <- ggplot()+
 ## Generate Figure x
 
 ```{r message=FALSE}
+exp1graph <- exp1graph+
+    annotate("text", x = 0.7, y = 0.95, label = "A", size = 5, fontface = "bold")
+exp2graph <- exp2graph+
+    annotate("text", x = 0.7, y = 0.95, label = "B", size = 5, fontface = "bold")
 figx <- exp1graph + exp2graph
 figx
 ggsave("figx.pdf", device = pdf, height= 4, width=10, dpi = 300, path = "Output")
-congraph
-ggsave("figx2.pdf", device = pdf, height= 5, width=6, dpi = 300, path = "Output")
-trngraph
-ggsave("figx.pdf", device = pdf, height= 5, width=6, dpi = 300, path = "Output")
+
+
+congraph <- congraph+
+    annotate("text", x = 0.8, y = 1, label = "A", size = 5, fontface = "bold")
+trngraph <- trngraph+
+    annotate("text", x = 0.7, y = 0.95, label = "B", size = 5, fontface = "bold")
+figx2 <- congraph + trngraph
+figx2
+ggsave("figx2.pdf", device = pdf, height= 4, width=10, dpi = 300, path = "Output")
+
 ```
 
 
