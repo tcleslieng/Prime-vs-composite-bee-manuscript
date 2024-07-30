@@ -527,7 +527,7 @@ trngraph <- ggplot()+
   geom_errorbar(data= dframetrn, aes(x = Test, y = proportion, ymin = confintlow, ymax = confinthigh), width=.2, position=position_dodge(.9)) +
   geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
   scale_fill_manual(values = wes_palette("GrandBudapest2", n = 3)) +
-  scale_y_continuous(labels = scales::percent_format(accuracy = 1, suffix = NULL)) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1, suffix = NULL), limits = c(0, 1)) +
   theme(panel.background = element_blank(),
         axis.line = element_line(colour = "black"),
         aspect.ratio = 1/1, 
@@ -543,7 +543,7 @@ trngraph2 <- ggplot()+
   geom_errorbar(data= dframetrn2, aes(x = Stimuli, y = proportion, ymin = confintlow, ymax = confinthigh), width=.2, position=position_dodge(.9)) +
   geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
   scale_fill_manual(values = wes_palette("GrandBudapest2", n = 2)) +
-  scale_y_continuous(labels = scales::percent_format(accuracy = 1, suffix = NULL)) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1, suffix = NULL), limits = c(0, 1))  +
   theme(panel.background = element_blank(),
         axis.line = element_line(colour = "black"),
         aspect.ratio = 1/1, 
