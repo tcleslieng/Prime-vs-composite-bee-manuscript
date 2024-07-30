@@ -165,6 +165,8 @@ Training_7v8test <-subset(TRAINING, CONDITION == "7v8")
 
 
 summary(TRAINING)
+summary(Training_learning_EE)
+summary(Training_learning_SA)
 
 ```
 
@@ -360,6 +362,8 @@ summary(tlm3)
 
 tlm4 <- glmer(CHOICE~ STIMULI + (1|BEEID), family = binomial, data = Training_learningtest) 
 summary(tlm4)
+tlm5 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = Training_learning_EE) 
+tlm6 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = Training_learning_SA) 
 
 ```
 
@@ -379,6 +383,15 @@ training7v8confinthigh <-(exp(0.5267269)/(1 + exp(0.5267269)))
 confint(tlm4)
 training_stim_confintlow <-(exp(-0.7246346)/(1 + exp(-0.7246346)))
 training_stim_confinthigh <-(exp(0.5220422)/(1 + exp(0.5220422)))
+
+confint(tlm5)
+training_EE_confintlow <-(exp(-0.06959618)/(1 + exp(-0.06959618)))
+training_EE_confinthigh <-(exp(0.4391975)/(1 + exp(0.4391975)))
+confint(tlm6)
+training_SA_confintlow <-(exp(-0.3101593)/(1 + exp(-0.3101593)))
+training_SA_confinthigh <-(exp(0.3813845)/(1 + exp(0.3813845)))
+
+
 ```
 
 
@@ -443,6 +456,17 @@ levels(trainingpoints$CONDITION) # check to view the change
 
 dframetrn$Test <- factor(dframetrn$Test, levels = c('Learning', '7v9', '7v8')) 
 dframetrn$Test # check to view the change
+
+trainingpoints2 <- Training_learningtest %>%   # calculate mean of each block for each bee
+  group_by(BEEID, STIMULI) %>% 
+  summarize(prop = mean(CHOICE))
+
+# Create dataframe for supplementary figure comparing performance in EE and SA
+
+dframetrn2 <- data.frame(Stimuli = rep(c("EE", "SA")), #create dataframe
+                        proportion = c(0.55, 0.51),
+                        confintlow = c(training_EE_confintlow, training_SA_confintlow),
+                        confinthigh = c(training_EE_confinthigh, training_SA_confinthigh))
               
 # Generate bargraph for experiment 1 
 
@@ -509,6 +533,25 @@ trngraph <- ggplot()+
         aspect.ratio = 1/1, 
         axis.title.y = element_text(vjust = 5),
         axis.title.x = element_text(vjust = -3))
+
+# Generate bargraph comparing EE and SA performance in the learning test
+
+trngraph2 <- ggplot()+
+  labs (x= "Stimulus condition", y = "Mean proportion of correct choices") +
+  geom_bar(data = dframetrn2, aes(x = Stimuli, y = proportion, fill = Stimuli), stat = "identity", position = "dodge") + 
+   geom_point(data = trainingpoints2, aes(x = STIMULI, y = prop), position = position_jitter(width=0.1), size =2, colour="black") +
+  geom_errorbar(data= dframetrn2, aes(x = Stimuli, y = proportion, ymin = confintlow, ymax = confinthigh), width=.2, position=position_dodge(.9)) +
+  geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
+  scale_fill_manual(values = wes_palette("GrandBudapest2", n = 2)) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1, suffix = NULL)) +
+  theme(panel.background = element_blank(),
+        axis.line = element_line(colour = "black"),
+        aspect.ratio = 1/1, 
+        axis.title.y = element_text(vjust = 5),
+        axis.title.x = element_text(vjust = -3),
+        plot.margin = margin(1,1,1,1, "cm")) + theme(axis.title = element_text(size = 20),
+    axis.text.x = element_text(size = 20),
+    axis.text.y = element_text(size = 15)) + theme(legend.position = "none")
 ```
 
 ## Generate Figure x
