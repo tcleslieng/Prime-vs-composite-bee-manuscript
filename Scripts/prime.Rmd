@@ -25,15 +25,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```
 
-```{r, echo=FALSE}
-knitr::opts_chunk$set(error = TRUE)
-```
-
-
 # **Introduction**
 
 
-In this document we tested if free-flying honey bees that are habituated to even composite numbers spontaneously discriminate an odd prime number from an odd composite number. This document provides details on data processing, statistical analysis and figures of the original manuscript submitted for peer review.
+In this study we tested if free-flying honey bees that are habituated to even composite numbers spontaneously discriminate an odd prime number from an odd composite number. This document provides details on data processing, statistical analysis and figures of the original manuscript submitted for peer review.
 
 The following code is written in the R programming language.
 
@@ -53,17 +48,23 @@ install.packages("dplyr") # Data processing
 install.packages("tidyverse") # QoL
 install.packages("ggpubr") # Create figure
 install.packages("patchwork") # Create figure
+install.packages("DHARMa")
+install.packages("performance") # For assumption checking
+install.packages("lmerTest")
 ```
 
 ### *Load packages*
 
 ```{r, message=FALSE, warning=FALSE}
 library(lme4) 
+library(lmerTest)
 library(ggplot2) 
 library(wesanderson)
 library(dplyr) 
 library(tidyverse) 
 library(patchwork) 
+library(performance) # For assumption checking
+library(DHARMa) # For assumption checking
 ```
 
 
@@ -397,7 +398,7 @@ training_SA_confinthigh <-(exp(0.3813845)/(1 + exp(0.3813845)))
 
 # **Figures**
 
-```{r message=FALSE, results='hide', error=FALSE}
+```{r message=FALSE, error=FALSE}
 
 # Create dataframe for experiment 1 bargraph
 
@@ -473,7 +474,7 @@ dframetrn2 <- data.frame(Stimuli = rep(c("EE", "SA")), #create dataframe
 exp1graph <- ggplot()+
   labs (x= "Condition", y = "Mean proportion of choices") +
   geom_bar(data = dframe, aes(x = Test, y = proportion, fill = Test), stat = "identity", position = "dodge") + 
-   geom_point(data = exp1points, aes(x = TEST, y = prop), position = position_jitter(width=0.1), size =0.5, colour="black") +
+   geom_point(data = exp1points, aes(x = TEST, y = prop), position = position_jitter(width=0.15, height=0.01), size =1, colour="#696969") +
   geom_errorbar(data= dframe, aes(x = Test, y = proportion, ymin = confintlow, ymax = confinthigh), width=.2, position=position_dodge(.9)) +
   geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
   scale_fill_manual(values = wes_palette("GrandBudapest2", n = 3)) +
@@ -482,25 +483,28 @@ exp1graph <- ggplot()+
   theme(panel.background = element_blank(),
         axis.line = element_line(colour = "black"),
         aspect.ratio = 1/1, 
-        axis.title.y = element_text(vjust = 5),
-        axis.title.x = element_text(vjust = -3))
+        plot.margin = margin(0.3,0.3,0.3,0.3, "cm"),
+        axis.title.x = element_text(vjust = -3)) + theme(legend.position = "none")
+print(exp1graph)
 
 # Generate bargraph for experiment 2
-
-exp2graph <- ggplot()+
-  labs (x= "Condition", y = "Mean proportion of choices") +
+exp2graph <- ggplot() +
+  labs(x = "Condition", y = NULL) +  # Set y-axis title to NULL
   geom_bar(data = dframe2, aes(x = Test, y = proportion, fill = Test), stat = "identity", position = "dodge") + 
-   geom_point(data = exp2points, aes(x = TEST, y = prop), position = position_jitter(width=0.1), size =0.5, colour="black") +
-  geom_errorbar(data= dframe2, aes(x = Test, y = proportion, ymin = confintlow, ymax = confinthigh), width=.2, position=position_dodge(.9)) +
-  geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
+  geom_point(data = exp2points, aes(x = TEST, y = prop), position = position_jitter(width = 0.15, height=0.01), size = 1, colour = "#696969") +
+  geom_errorbar(data = dframe2, aes(x = Test, y = proportion, ymin = confintlow, ymax = confinthigh), width = .2, position = position_dodge(.9)) +
+  geom_hline(yintercept = 0.5, linetype = "dashed", colour = "black") +
   scale_fill_manual(values = wes_palette("GrandBudapest2", n = 4)) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1, suffix = NULL)) +
-  scale_x_discrete(labels=c("7v9" = "7 vs 9", "11v9" = "11 vs 9", "13v15" = "13 vs 15", "control" = "control"))+
+  scale_x_discrete(labels = c("7v9" = "7 vs 9", "11v9" = "11 vs 9", "13v15" = "13 vs 15", "control" = "control")) +
   theme(panel.background = element_blank(),
         axis.line = element_line(colour = "black"),
-        aspect.ratio = 1/1, 
-        axis.title.y = element_text(vjust = 5),
-        axis.title.x = element_text(vjust = -3))
+        aspect.ratio = 1 / 1, 
+        plot.margin = margin(0.3,0.3,0.3,0.3, "cm"),
+        axis.title.y = element_blank(),  # Hide y-axis title
+        axis.title.x = element_text(vjust = -3)) + theme(legend.position = "none")
+
+print(exp2graph)
 
 # Generate bargraph for control experiment
 
@@ -508,7 +512,7 @@ congraph <- ggplot()+
   labs (x= "Condition", y = "Mean proportion of choices") +
   geom_bar(data = dframecon, aes(x = Test, y = proportion, fill = Condition), stat = "identity", position = "dodge") + 
   geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
-  geom_point(data = controlpoints, aes(x = TEST, y = prop, fill = CONDITION), position = position_jitterdodge(jitter.width=0.2, jitter.height = 0.01, dodge.width = 0.9),       show.legend = FALSE, size =0.5, colour="black") +
+  geom_point(data = controlpoints, aes(x = TEST, y = prop, fill = CONDITION), position = position_jitterdodge(jitter.width=0.15, jitter.height = 0.01, dodge.width = 0.9),       show.legend = FALSE, size =1, colour="#696969") +
   scale_fill_manual(values = wes_palette("GrandBudapest2", n = 2)) +
   geom_errorbar(data= dframecon, aes(x = Test, y = proportion, ymin = confintlow, ymax = confinthigh, group = Condition), width=.15, position=position_dodge(.9)) +
   geom_text(data= dframecon, x =0.775, y = 0.83, label ="*", size =6) +
@@ -516,14 +520,16 @@ congraph <- ggplot()+
   theme(panel.background = element_blank(),
         axis.line = element_line(colour = "black"),
         aspect.ratio = 1/1,
-        plot.margin = margin(0.3,0.3,0.1,0.4, "cm"))
+        axis.title.x = element_text(vjust = -3),
+        plot.margin = margin(0.3,0.3,0.3,0.3, "cm")) + theme(legend.position = "none")
+print(congraph)
 
 # Generate bargraph for training experiment
 
 trngraph <- ggplot()+
   labs (x= "Condition", y = "Mean proportion of choices") +
   geom_bar(data = dframetrn, aes(x = Test, y = proportion, fill = Test), stat = "identity", position = "dodge") + 
-   geom_point(data = trainingpoints, aes(x = CONDITION, y = prop), position = position_jitter(width=0.1), size =1, colour="black") +
+   geom_point(data = trainingpoints, aes(x = CONDITION, y = prop), position = position_jitter(width=0.15,height=0.01), size =1, colour="#696969") +
   geom_errorbar(data= dframetrn, aes(x = Test, y = proportion, ymin = confintlow, ymax = confinthigh), width=.2, position=position_dodge(.9)) +
   geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
   scale_fill_manual(values = wes_palette("GrandBudapest2", n = 3)) +
@@ -531,15 +537,17 @@ trngraph <- ggplot()+
   theme(panel.background = element_blank(),
         axis.line = element_line(colour = "black"),
         aspect.ratio = 1/1, 
-        axis.title.y = element_text(vjust = 5),
-        axis.title.x = element_text(vjust = -3))
+        axis.title.y = element_blank(),
+        plot.margin = margin(0.3,0.3,0.3,0.3, "cm"),
+        axis.title.x = element_text(vjust = -3)) + theme(legend.position = "none")
+print(trngraph)
 
 # Generate bargraph comparing EE and SA performance in the learning test
 
 trngraph2 <- ggplot()+
   labs (x= "Stimulus condition", y = "Mean proportion of correct choices") +
   geom_bar(data = dframetrn2, aes(x = Stimuli, y = proportion, fill = Stimuli), stat = "identity", position = "dodge") + 
-   geom_point(data = trainingpoints2, aes(x = STIMULI, y = prop), position = position_jitter(width=0.1), size =2, colour="black") +
+   geom_point(data = trainingpoints2, aes(x = STIMULI, y = prop), position = position_jitter(width=0.15, height=0.01), size =2, colour="#696969") +
   geom_errorbar(data= dframetrn2, aes(x = Stimuli, y = proportion, ymin = confintlow, ymax = confinthigh), width=.2, position=position_dodge(.9)) +
   geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
   scale_fill_manual(values = wes_palette("GrandBudapest2", n = 2)) +
@@ -549,42 +557,95 @@ trngraph2 <- ggplot()+
         aspect.ratio = 1/1, 
         axis.title.y = element_text(vjust = 5),
         axis.title.x = element_text(vjust = -3),
-        plot.margin = margin(1,1,1,1, "cm")) + theme(axis.title = element_text(size = 20),
-    axis.text.x = element_text(size = 20),
-    axis.text.y = element_text(size = 15)) + theme(legend.position = "none")
+        plot.margin = margin(0.6,0.6,0.6,0.6, "cm")) + theme(axis.title = element_text(size = 15),
+    axis.text.x = element_text(size = 15),
+    axis.text.y = element_text(size = 15),
+    axis.title.y = element_text(vjust = 5, size = 15)) + theme(legend.position = "none")
+print(trngraph2)
 ```
 
 ## Generate Figure x
 
 ```{r message=FALSE}
-exp1graph <- exp1graph+
-    annotate("text", x = 0.7, y = 0.95, label = "A", size = 5, fontface = "bold")
-exp2graph <- exp2graph+
-    annotate("text", x = 0.7, y = 0.95, label = "B", size = 5, fontface = "bold")
+
 figx <- exp1graph + exp2graph
-figx
-ggsave("figx.pdf", device = pdf, height= 4, width=10, dpi = 300, path = "Output")
+figx + plot_annotation(tag_levels = "A")
+ggsave("figx.pdf", device = pdf, height= 4, width=8, dpi = 300, path = "../Output")
+ggsave("figx.png", device = png, height= 4, width=8, dpi = 300, path = "../Output")
 
 
-congraph <- congraph+
-    annotate("text", x = 0.8, y = 1, label = "A", size = 5, fontface = "bold")
-trngraph <- trngraph+
-    annotate("text", x = 0.7, y = 0.95, label = "B", size = 5, fontface = "bold")
 figx2 <- congraph + trngraph
-figx2
-ggsave("figx2.pdf", device = pdf, height= 4, width=10, dpi = 300, path = "Output")
-
+figx2 + plot_annotation(tag_levels = "A")
+ggsave("figx2.pdf", device = pdf, height= 4, width=8, dpi = 300, path = "../Output")
+ggsave("figx2.png", device = png, height= 4, width=8, dpi = 300, path = "../Output")
+trngraph2
+ggsave("figSuppx.pdf", device = pdf, height= 5, width=5, dpi = 300, path = "../Output")
+ggsave("figSuppx.png", device = png, height= 5, width=5, dpi = 300, path = "../Output")
 ```
 
+# Checking Model fit
 
-```{r eval=FALSE}
-figx + plot_annotation(tag_levels = "A")
-ggsave("figx.pdf", device = pdf, height= 4, width=10, dpi = 300, path = "Output")
-ggsave("figx.png", device = png, height= 4, width=10, dpi = 300, path = "Output")
-congraph
-ggsave("figx2.pdf", device = pdf, height= 5, width=6, dpi = 300, path = "Output")
-trngraph
-ggsave("figx2.png", device = png, height= 5, width=6, dpi = 300, path = "Output")
+```{r warning=FALSE, error = FALSE, message=FALSE}
+
+models <- list(
+  EXP1_7v9_pooled = lm7,
+  EXP1_9v11_pooled = lm8,
+  EXP1_13v15_pooled = lm9,
+  EXP2_7v9_pooled = lm18,
+  EXP2_9v11_pooled = lm19,
+  EXP2_13v15_pooled = lm20,
+  EXP2_NEGCONT_pooled = lm21,
+  EEcon3v1 = clm1,
+  EEcon3v2 = clm2,
+  EEcon3v4 = clm3,
+  EEcon3v5 = clm4,
+  SAcon3v1 = clm5,
+  SAcon3v2 = clm6,
+  SAcon3v4 = clm7,
+  SAcon3v5 = clm8,
+  training_learning = tlm1,
+  training_7v9 = tlm2,
+  training_7v8 = tlm3,
+  training_EEvsSA_test = tlm4)
+  
+
+
+
+# Check for overdispersion
+for (model_name in names(models)) {
+  cat(paste0("Overdispersion Check for ", model_name, "\n"))
+  print(check_overdispersion(models[[model_name]]))
+  cat("\n")
+}
+
+# Compute performance metrics for each model
+performance_results <- lapply(models, model_performance)
+
+# Capture and print markdown output for each model
+for (model_name in names(performance_results)) {
+  cat(paste0("### Performance Metrics for ", model_name, "\n\n"))
+  
+  # Capture the output in markdown format
+  output <- capture.output(display(performance_results[[model_name]], format = "markdown", digits = 2, caption = NULL))
+  
+  # Print the captured output to the console
+  cat(paste(output, collapse = "\n"))
+  
+  cat("\n\n")
+}
+
+# Loop for simulating residuals
+for (model_name in names(models)) {
+  cat(paste0("Simulated Residuals and Plot for ", model_name, "\n"))
+  
+  # Simulate residuals
+  simulated_res <- simulateResiduals(fittedModel = models[[model_name]])
+  
+  # Plot simulated residuals
+  plot(simulated_res)
+  
+  cat("\n\n")
+}
 
 ```
 
