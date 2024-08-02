@@ -569,15 +569,17 @@ print(trngraph2)
 ```{r message=FALSE}
 
 figx <- exp1graph + exp2graph
-figx + plot_annotation(tag_levels = "A")
-ggsave("figx.pdf", device = pdf, height= 4, width=8, dpi = 300, path = "../Output")
-ggsave("figx.png", device = png, height= 4, width=8, dpi = 300, path = "../Output")
+figx + plot_annotation(tag_levels = "A") & 
+  theme(plot.tag.position = c(-0.05, 1),plot.tag = element_text(size = 16, face = "bold"))
+ggsave("figx.pdf", device = pdf, height= 4, width=8.2, dpi = 300, path = "../Output")
+ggsave("figx.png", device = png, height= 4, width=8.2, dpi = 300, path = "../Output")
 
 
 figx2 <- congraph + trngraph
-figx2 + plot_annotation(tag_levels = "A")
-ggsave("figx2.pdf", device = pdf, height= 4, width=8, dpi = 300, path = "../Output")
-ggsave("figx2.png", device = png, height= 4, width=8, dpi = 300, path = "../Output")
+figx2 + plot_annotation(tag_levels = "A") & 
+  theme(plot.tag.position = c(-0.05, 1),plot.tag = element_text(size = 16, face = "bold"))
+ggsave("figx2.pdf", device = pdf, height= 4, width=8.2, dpi = 300, path = "../Output")
+ggsave("figx2.png", device = png, height= 4, width=8.2, dpi = 300, path = "../Output")
 trngraph2
 ggsave("figSuppx.pdf", device = pdf, height= 5, width=5, dpi = 300, path = "../Output")
 ggsave("figSuppx.png", device = png, height= 5, width=5, dpi = 300, path = "../Output")
