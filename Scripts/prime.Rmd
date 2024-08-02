@@ -458,16 +458,17 @@ levels(trainingpoints$CONDITION) # check to view the change
 dframetrn$Test <- factor(dframetrn$Test, levels = c('Learning', '7v9', '7v8')) 
 dframetrn$Test # check to view the change
 
-trainingpoints2 <- Training_learningtest %>%   # calculate mean of each block for each bee
-  group_by(BEEID, STIMULI) %>% 
-  summarize(prop = mean(CHOICE))
-
 # Create dataframe for supplementary figure comparing performance in EE and SA
 
 dframetrn2 <- data.frame(Stimuli = rep(c("EE", "SA")), #create dataframe
                         proportion = c(0.55, 0.51),
                         confintlow = c(training_EE_confintlow, training_SA_confintlow),
                         confinthigh = c(training_EE_confinthigh, training_SA_confinthigh))
+
+trainingpoints2 <- Training_learningtest %>%   # calculate mean of each block for each bee
+  group_by(BEEID, STIMULI) %>% 
+  summarize(prop = mean(CHOICE))
+
               
 # Generate bargraph for experiment 1 
 
