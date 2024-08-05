@@ -473,7 +473,7 @@ trainingpoints2 <- Training_learningtest %>%   # calculate mean of each block fo
 # Generate bargraph for experiment 1 
 
 exp1graph <- ggplot()+
-  labs (x= "Condition", y = "Mean proportion of choices") +
+  labs (x= "Test condition", y = "Mean proportion of choices") +
   geom_bar(data = dframe, aes(x = Test, y = proportion, fill = Test), stat = "identity", position = "dodge") + 
    geom_point(data = exp1points, aes(x = TEST, y = prop), position = position_jitter(width=0.15, height=0.01), size =1, colour="#696969") +
   geom_errorbar(data= dframe, aes(x = Test, y = proportion, ymin = confintlow, ymax = confinthigh), width=.2, position=position_dodge(.9)) +
@@ -490,7 +490,7 @@ print(exp1graph)
 
 # Generate bargraph for experiment 2
 exp2graph <- ggplot() +
-  labs(x = "Condition", y = NULL) +  # Set y-axis title to NULL
+  labs(x = "Test condition", y = NULL) +  # Set y-axis title to NULL
   geom_bar(data = dframe2, aes(x = Test, y = proportion, fill = Test), stat = "identity", position = "dodge") + 
   geom_point(data = exp2points, aes(x = TEST, y = prop), position = position_jitter(width = 0.15, height=0.01), size = 1, colour = "#696969") +
   geom_errorbar(data = dframe2, aes(x = Test, y = proportion, ymin = confintlow, ymax = confinthigh), width = .2, position = position_dodge(.9)) +
@@ -510,7 +510,7 @@ print(exp2graph)
 # Generate bargraph for control experiment
 
 congraph <- ggplot()+
-  labs (x= "Condition", y = "Mean proportion of choices") +
+  labs (x= "Test condition", y = "Mean proportion of choices") +
   geom_bar(data = dframecon, aes(x = Test, y = proportion, fill = Condition), stat = "identity", position = "dodge") + 
   geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
   geom_point(data = controlpoints, aes(x = TEST, y = prop, fill = CONDITION), position = position_jitterdodge(jitter.width=0.15, jitter.height = 0.01, dodge.width = 0.9),       show.legend = FALSE, size =1, colour="#696969") +
@@ -528,7 +528,7 @@ print(congraph)
 # Generate bargraph for training experiment
 
 trngraph <- ggplot()+
-  labs (x= "Condition", y = "Mean proportion of choices") +
+  labs (x= "Test condition", y = "Mean proportion of choices") +
   geom_bar(data = dframetrn, aes(x = Test, y = proportion, fill = Test), stat = "identity", position = "dodge") + 
    geom_point(data = trainingpoints, aes(x = CONDITION, y = prop), position = position_jitter(width=0.15,height=0.01), size =1, colour="#696969") +
   geom_errorbar(data= dframetrn, aes(x = Test, y = proportion, ymin = confintlow, ymax = confinthigh), width=.2, position=position_dodge(.9)) +
