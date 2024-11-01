@@ -403,7 +403,7 @@ training_SA_confinthigh <-(exp(0.3813845)/(1 + exp(0.3813845)))
 # Create dataframe for experiment 1 bargraph
 
 dframe <- data.frame(Test = rep(c("7v9", "11v9", "13v15")),
-                     proportion = c(0.52,0.55,0.49),
+                     percentage = c(0.52,0.55,0.49),
                      confintlow = c(EXP1_7v9confintlow,EXP1_11v9confintlow,EXP1_13v15confintlow),
                      confinthigh = c(EXP1_7v9confinthigh,EXP1_11v9confinthigh,EXP1_13v15confinthigh))
 
@@ -416,7 +416,7 @@ exp1points <- PRIMEDATA %>%   # calculate mean of each block for each bee
 # Create dataframe for experiment 2 bargraph
 
 dframe2 <- data.frame(Test = rep(c("7v9", "11v9", "13v15","control")), 
-                     proportion = c(0.56,0.52,0.45,0.475),
+                     percentage = c(0.56,0.52,0.45,0.475),
                      confintlow = c(EXP2_7v9confintlow,EXP2_11v9confintlow,EXP2_13v15confintlow,EXP2_NEGCONTconfintlow),
                      confinthigh = c(EXP2_7v9confinthigh,EXP2_11v9confinthigh,EXP2_13v15confinthigh,EXP2_NEGCONTconfinthigh))
 
@@ -429,7 +429,7 @@ exp2points <- PRIMEGRP %>%   # calculate mean of each block for each bee
 
 dframecon <- data.frame(Test = rep(c("3v1", "3v2","3v4","3v5"), each = 2), 
                     Condition = rep(c("EE", "SA"), times = 4),
-                    proportion = c(0.6889, 0.57, 0.5, 0.51, 0.5111, 0.54, 0.5444, 0.46),
+                    percentage = c(0.6889, 0.57, 0.5, 0.51, 0.5111, 0.54, 0.5444, 0.46),
                      confintlow = c(EE3v1confintlow, SA3v1confintlow, EE3v2confintlow, SA3v2confintlow, EE3v4confintlow, SA3v4confintlow, EE3v5confintlow, SA3v5confintlow),
                      confinthigh = c(EE3v1confinthigh, SA3v1confinthigh, EE3v2confinthigh, SA3v2confinthigh, EE3v4confinthigh, SA3v4confinthigh, EE3v5confinthigh, SA3v5confinthigh))
 
@@ -442,7 +442,7 @@ controlpoints <- CONTROL %>%   # calculate mean of each block for each bee
 # Create dataframe for training experiment
 
 dframetrn <- data.frame(Test = rep(c("Learning", "7v9","7v8")), #create dataframe
-                        proportion = c(0.5, 0.55, 0.53),
+                        percentage = c(0.5, 0.55, 0.53),
                         confintlow = c(traininglearningconfintlow, training7v9confintlow, training7v8confintlow),
                         confinthigh = c(traininglearningconfinthigh, training7v9confinthigh, training7v8confinthigh))
 
@@ -461,7 +461,7 @@ dframetrn$Test # check to view the change
 # Create dataframe for supplementary figure comparing performance in EE and SA
 
 dframetrn2 <- data.frame(Stimuli = rep(c("EE", "SA")), #create dataframe
-                        proportion = c(0.55, 0.51),
+                        percentage = c(0.55, 0.51),
                         confintlow = c(training_EE_confintlow, training_SA_confintlow),
                         confinthigh = c(training_EE_confinthigh, training_SA_confinthigh))
 
@@ -473,10 +473,10 @@ trainingpoints2 <- Training_learningtest %>%   # calculate mean of each block fo
 # Generate bargraph for experiment 1 
 
 exp1graph <- ggplot()+
-  labs (x= "Test condition", y = "Mean proportion of choices") +
-  geom_bar(data = dframe, aes(x = Test, y = proportion, fill = Test), stat = "identity", position = "dodge") + 
-   geom_point(data = exp1points, aes(x = TEST, y = prop), position = position_jitter(width=0.15, height=0.01), size =1, colour="#696969") +
-  geom_errorbar(data= dframe, aes(x = Test, y = proportion, ymin = confintlow, ymax = confinthigh), width=.2, position=position_dodge(.9)) +
+  labs (x= "Test condition", y = "Mean percentage of choices") +
+  geom_bar(data = dframe, aes(x = Test, y = percentage, fill = Test), stat = "identity", position = "dodge") + 
+   geom_point(data = exp1points, aes(x = TEST, y = prop, col = BEEID), position = position_jitter(width=0.15, height=0.01), size =1) +
+  geom_errorbar(data= dframe, aes(x = Test, y = percentage, ymin = confintlow, ymax = confinthigh), width=.2, position=position_dodge(.9)) +
   geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
   scale_fill_manual(values = wes_palette("GrandBudapest2", n = 3)) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1, suffix = NULL)) +
@@ -491,9 +491,9 @@ print(exp1graph)
 # Generate bargraph for experiment 2
 exp2graph <- ggplot() +
   labs(x = "Test condition", y = NULL) +  # Set y-axis title to NULL
-  geom_bar(data = dframe2, aes(x = Test, y = proportion, fill = Test), stat = "identity", position = "dodge") + 
-  geom_point(data = exp2points, aes(x = TEST, y = prop), position = position_jitter(width = 0.15, height=0.01), size = 1, colour = "#696969") +
-  geom_errorbar(data = dframe2, aes(x = Test, y = proportion, ymin = confintlow, ymax = confinthigh), width = .2, position = position_dodge(.9)) +
+  geom_bar(data = dframe2, aes(x = Test, y = percentage, fill = Test), stat = "identity", position = "dodge") + 
+  geom_point(data = exp2points, aes(x = TEST, y = prop, col = BEEID), position = position_jitter(width = 0.15, height=0.01), size = 1) +
+  geom_errorbar(data = dframe2, aes(x = Test, y = percentage, ymin = confintlow, ymax = confinthigh), width = .2, position = position_dodge(.9)) +
   geom_hline(yintercept = 0.5, linetype = "dashed", colour = "black") +
   scale_fill_manual(values = wes_palette("GrandBudapest2", n = 4)) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1, suffix = NULL)) +
@@ -509,13 +509,15 @@ print(exp2graph)
 
 # Generate bargraph for control experiment
 
-congraph <- ggplot()+
-  labs (x= "Test condition", y = "Mean proportion of choices") +
-  geom_bar(data = dframecon, aes(x = Test, y = proportion, fill = Condition), stat = "identity", position = "dodge") + 
+custom_shapes <- c(21, 22, 23, 24, 25, 21, 22, 23, 24, 25)
+
+congraph <- ggplot()+ 
+  labs (x= "Test condition", y = "Mean percentage of choices") +
+  geom_bar(data = dframecon, aes(x = Test, y = percentage, fill = Condition), stat = "identity", position = "dodge") + 
   geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
-  geom_point(data = controlpoints, aes(x = TEST, y = prop, fill = CONDITION), position = position_jitterdodge(jitter.width=0.15, jitter.height = 0.01, dodge.width = 0.9),       show.legend = FALSE, size =1, colour="#696969") +
+  geom_point(data = controlpoints, aes(x = TEST, y = prop, fill = CONDITION), position = position_jitterdodge(jitter.width=0.15, jitter.height = 0.01, dodge.width = 0.9), show.legend = FALSE, size =1, colour="#696969") +
   scale_fill_manual(values = wes_palette("GrandBudapest2", n = 2)) +
-  geom_errorbar(data= dframecon, aes(x = Test, y = proportion, ymin = confintlow, ymax = confinthigh, group = Condition), width=.15, position=position_dodge(.9)) +
+  geom_errorbar(data= dframecon, aes(x = Test, y = percentage, ymin = confintlow, ymax = confinthigh, group = Condition), width=.15, position=position_dodge(.9)) +
   geom_text(data= dframecon, x =0.775, y = 0.83, label ="*", size =6) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1, suffix = NULL))+
   theme(panel.background = element_blank(),
@@ -528,10 +530,10 @@ print(congraph)
 # Generate bargraph for training experiment
 
 trngraph <- ggplot()+
-  labs (x= "Test condition", y = "Mean proportion of choices") +
-  geom_bar(data = dframetrn, aes(x = Test, y = proportion, fill = Test), stat = "identity", position = "dodge") + 
-   geom_point(data = trainingpoints, aes(x = CONDITION, y = prop), position = position_jitter(width=0.15,height=0.01), size =1, colour="#696969") +
-  geom_errorbar(data= dframetrn, aes(x = Test, y = proportion, ymin = confintlow, ymax = confinthigh), width=.2, position=position_dodge(.9)) +
+  labs (x= "Test condition", y = "Mean percentage of choices") +
+  geom_bar(data = dframetrn, aes(x = Test, y = percentage, fill = Test), stat = "identity", position = "dodge") + 
+   geom_point(data = trainingpoints, aes(x = CONDITION, y = prop, col = BEEID), position = position_jitter(width=0.15,height=0.01), size =1) +
+  geom_errorbar(data= dframetrn, aes(x = Test, y = percentage, ymin = confintlow, ymax = confinthigh), width=.2, position=position_dodge(.9)) +
   geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
   scale_fill_manual(values = wes_palette("GrandBudapest2", n = 3)) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1, suffix = NULL), limits = c(0, 1)) +
@@ -546,10 +548,10 @@ print(trngraph)
 # Generate bargraph comparing EE and SA performance in the learning test
 
 trngraph2 <- ggplot()+
-  labs (x= "Stimulus condition", y = "Mean proportion of correct choices") +
-  geom_bar(data = dframetrn2, aes(x = Stimuli, y = proportion, fill = Stimuli), stat = "identity", position = "dodge") + 
-   geom_point(data = trainingpoints2, aes(x = STIMULI, y = prop), position = position_jitter(width=0.15, height=0.01), size =2, colour="#696969") +
-  geom_errorbar(data= dframetrn2, aes(x = Stimuli, y = proportion, ymin = confintlow, ymax = confinthigh), width=.2, position=position_dodge(.9)) +
+  labs (x= "Stimulus condition", y = "Mean percentage of correct choices") +
+  geom_bar(data = dframetrn2, aes(x = Stimuli, y = percentage, fill = Stimuli), stat = "identity", position = "dodge") + 
+   geom_point(data = trainingpoints2, aes(x = STIMULI, y = prop, col = BEEID), position = position_jitter(width=0.15, height=0.01), size =1) +
+  geom_errorbar(data= dframetrn2, aes(x = Stimuli, y = percentage, ymin = confintlow, ymax = confinthigh), width=.2, position=position_dodge(.9)) +
   geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
   scale_fill_manual(values = wes_palette("GrandBudapest2", n = 2)) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1, suffix = NULL), limits = c(0, 1))  +
@@ -570,14 +572,14 @@ print(trngraph2)
 ```{r message=FALSE}
 
 figx <- exp1graph + exp2graph
-figx + plot_annotation(tag_levels = "A") & 
+figx + plot_annotation(tag_levels = "a") & 
   theme(plot.tag.position = c(-0.05, 1),plot.tag = element_text(size = 16, face = "bold"))
 ggsave("figx.pdf", device = pdf, height= 4, width=8.2, dpi = 300, path = "../Output")
 ggsave("figx.png", device = png, height= 4, width=8.2, dpi = 300, path = "../Output")
 
 
 figx2 <- congraph + trngraph
-figx2 + plot_annotation(tag_levels = "A") & 
+figx2 + plot_annotation(tag_levels = "a") & 
   theme(plot.tag.position = c(-0.05, 1),plot.tag = element_text(size = 16, face = "bold"))
 ggsave("figx2.pdf", device = pdf, height= 4, width=8.2, dpi = 300, path = "../Output")
 ggsave("figx2.png", device = png, height= 4, width=8.2, dpi = 300, path = "../Output")
