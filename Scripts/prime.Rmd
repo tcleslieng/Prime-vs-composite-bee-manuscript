@@ -1,6 +1,6 @@
 ---
 title: "Exploring categorisation of symmetrical/asymmetrical quantities in honeybees using perceptual grouping"
-author: "Leslie Ng and Scarlett Howard"
+author: "Author names omitted"
 date: "25-07-2024"
 output:
   html_document:
