@@ -84,6 +84,9 @@ CONTROL <- read.csv(
 TRAINING <- read.csv(
   "../Data/training_data.csv", header=TRUE)
 
+EXT_PRIMING <- read.csv(
+  "../Data/60priming.csv", header=TRUE)
+
 #Subset Prime data 
 
 PRIMEDATA$BEEID <- as.factor(PRIMEDATA$BEEID) # Treat Bee ID as factor
@@ -95,12 +98,18 @@ POS13v15 <-subset(POSITIVE, TEST == "13v15")
 NEG7v9 <-subset(NEGATIVE, TEST == "7v9") 
 NEG11v9 <-subset(NEGATIVE, TEST == "11v9") 
 NEG13v15 <-subset(NEGATIVE, TEST == "13v15") 
+EXT_7v9 <- subset(EXT_PRIMING, CONDITION == "SMALL") 
+EXT_9v11 <- subset(EXT_PRIMING, CONDITION == "LARGE") 
+EXT_13v15 <- subset(EXT_PRIMING, CONDITION == "DIFFICULT") 
 summary(POS7v9)
 summary(NEG7v9)
 summary(POS11v9)
 summary(NEG11v9)
 summary(POS13v15)
 summary(NEG13v15)
+summary(EXT_7v9)
+summary(EXT_9v11)
+summary(EXT_13v15)
 
 #Subset Prime grouped data
 
@@ -189,6 +198,13 @@ lm5 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = NEG11v9)
 summary(lm5)
 lm6 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = NEG13v15) 
 summary(lm6)
+
+lm_ext1 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXT_7v9) 
+summary(lm_ext1)
+lm_ext2 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXT_9v11) 
+summary(lm_ext2)
+lm_ext3 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXT_13v15) 
+summary(lm_ext3)
 
 ```
 
