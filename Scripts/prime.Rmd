@@ -67,8 +67,6 @@ library(performance) # For assumption checking
 library(DHARMa) # For assumption checking
 ```
 
-
-
 # **Data importing**
 
 ```{r, message=FALSE, results="hide"}
@@ -87,6 +85,12 @@ TRAINING <- read.csv(
 EXT_PRIMING <- read.csv(
   "../Data/60priming.csv", header=TRUE)
 
+EXT_TRAINING <- read.csv(
+  "../Data/60training_testphase_data.csv", header=TRUE)
+
+EXT_TRAINING_trainingphase <- read.csv(
+  "../Data/60training_trainphase_data.csv", header=TRUE)
+
 #Subset Prime data 
 
 PRIMEDATA$BEEID <- as.factor(PRIMEDATA$BEEID) # Treat Bee ID as factor
@@ -98,9 +102,14 @@ POS13v15 <-subset(POSITIVE, TEST == "13v15")
 NEG7v9 <-subset(NEGATIVE, TEST == "7v9") 
 NEG11v9 <-subset(NEGATIVE, TEST == "11v9") 
 NEG13v15 <-subset(NEGATIVE, TEST == "13v15") 
-EXT_7v9 <- subset(EXT_PRIMING, CONDITION == "SMALL") 
-EXT_9v11 <- subset(EXT_PRIMING, CONDITION == "LARGE") 
-EXT_13v15 <- subset(EXT_PRIMING, CONDITION == "DIFFICULT") 
+EXT_7v9 <- subset(EXT_PRIMING, TEST == "7v9") 
+EXT_9v11 <- subset(EXT_PRIMING, TEST == "11v9") 
+EXT_13v15 <- subset(EXT_PRIMING, TEST == "13v15") 
+
+EXT2_LEARNING <- subset(EXT_TRAINING, TEST == "Learning") 
+EXT2_7v9 <- subset(EXT_TRAINING, TEST == "7v9") 
+EXT2_7v8 <- subset(EXT_TRAINING, TEST == "7v8") 
+
 summary(POS7v9)
 summary(NEG7v9)
 summary(POS11v9)
@@ -110,6 +119,9 @@ summary(NEG13v15)
 summary(EXT_7v9)
 summary(EXT_9v11)
 summary(EXT_13v15)
+summary(EXT2_LEARNING)
+summary(EXT2_7v9)
+summary(EXT2_7v8)
 
 #Subset Prime grouped data
 
@@ -173,10 +185,17 @@ Training_7v9test <- subset(TRAINING, CONDITION == "7v9")
 
 Training_7v8test <-subset(TRAINING, CONDITION == "7v8")  
 
-
 summary(TRAINING)
 summary(Training_learning_EE)
 summary(Training_learning_SA)
+
+# Treat variables as factor
+
+EXT_TRAINING$TEST <- as.factor(EXT_TRAINING$TEST)
+EXT_TRAINING$BEEID <- as.factor(EXT_TRAINING$BEEID)
+EXT_PRIMING$BEEID <- as.factor(EXT_PRIMING$BEEID)
+EXT_TRAINING_trainingphase$BEEID <- as.factor(EXT_TRAINING_trainingphase$BEEID)
+levels(EXT_TRAINING$TEST)
 
 ```
 
@@ -198,13 +217,6 @@ lm5 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = NEG11v9)
 summary(lm5)
 lm6 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = NEG13v15) 
 summary(lm6)
-
-lm_ext1 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXT_7v9) 
-summary(lm_ext1)
-lm_ext2 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXT_9v11) 
-summary(lm_ext2)
-lm_ext3 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXT_13v15) 
-summary(lm_ext3)
 
 ```
 
@@ -290,7 +302,6 @@ summary(lm21)
 
 ```
 
-
 ### *Confidence intervals*
 
 ```{r results='hide', error=FALSE, warning=FALSE, message=FALSE}
@@ -366,7 +377,7 @@ SA3v5confintlow <-(exp(-0.6521079)/(1 + exp(-0.6521079)))
 SA3v5confinthigh <-(exp(0.3092899)/(1 + exp(0.3092899)))
 ```
 
-## Training experiment
+## Training experiment (30 trials)
 
 ```{r message=FALSE, error=FALSE}
 
@@ -408,11 +419,64 @@ confint(tlm6)
 training_SA_confintlow <-(exp(-0.3101593)/(1 + exp(-0.3101593)))
 training_SA_confinthigh <-(exp(0.3813845)/(1 + exp(0.3813845)))
 
+```
 
+## Training + priming experiments (60 trials)
+
+```{r message=FALSE, error=FALSE}
+lm_ext1 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXT_7v9) 
+summary(lm_ext1)
+lm_ext2 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXT_9v11) 
+summary(lm_ext2)
+lm_ext3 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXT_13v15) 
+summary(lm_ext3)
+
+lm_ext4 <-glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXT2_LEARNING) 
+summary(lm_ext4)
+lm_ext5 <-glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXT2_7v9) 
+summary(lm_ext5)
+lm_ext6 <-glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXT2_7v8) 
+summary(lm_ext6)
+
+lm_ext_training <-glmer(CHOICE~ CNUM + (1|BEEID), family = binomial, data = EXT_TRAINING_trainingphase) 
+summary(lm_ext_training)
+
+lm_ext_training2 <-glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXT_TRAINING_trainingphase) 
+summary(lm_ext_training2)
+```
+
+### *Confidence intervals*
+
+```{r results='hide', error=FALSE, message=FALSE, warning=FALSE}
+confint(lm_ext1)
+ext1_confintlow <-(exp(-0.5754465)/(1 + exp(-0.5754465)))
+ext1_confinthigh <-(exp(0.2440522)/(1 + exp(0.2440522)))
+
+confint(lm_ext2)
+ext2_confintlow <-(exp(-0.3690665)/(1 + exp(-0.3690665)))
+ext2_confinthigh <-(exp(0.4516763)/(1 + exp(0.4516763)))
+
+confint(lm_ext3)
+ext3_confintlow <-(exp(-0.1523864)/(1 + exp(-0.1523864)))
+ext3_confinthigh <-(exp(0.6439017)/(1 + exp(0.6439017)))
+
+confint(lm_ext4)
+ext4_confintlow <-(exp(0.1115877)/(1 + exp(0.1115877)))
+ext4_confinthigh <-(exp(0.8494996)/(1 + exp(0.8494996)))
+
+confint(lm_ext5)
+ext5_confintlow <-(exp(-0.1911968)/(1 + exp(-0.1911968)))
+ext5_confinthigh <-(exp(0.5289128)/(1 + exp(0.5289128)))
+
+confint(lm_ext6)
+ext6_confintlow <-(exp(-0.06882467)/(1 + exp(-0.06882467)))
+ext6_confinthigh <-(exp(0.6940668)/(1 + exp(0.6940668)))
 ```
 
 
 # **Figures**
+
+## Dataframes
 
 ```{r message=FALSE, error=FALSE}
 
@@ -484,6 +548,46 @@ dframetrn2 <- data.frame(Stimuli = rep(c("EE", "SA")), #create dataframe
 trainingpoints2 <- Training_learningtest %>%   # calculate mean of each block for each bee
   group_by(BEEID, STIMULI) %>% 
   summarize(prop = mean(CHOICE))
+
+# Create dataframe for 60 trials priming experiment
+summary(EXT_7v9)
+summary(EXT_9v11)
+summary(EXT_13v15)
+
+dframeext1 <- data.frame(Test = rep(c("7v9", "11v9", "13v15")),
+                     percentage = c(0.46,0.51,0.56),
+                     confintlow = c(ext1_confintlow,ext2_confintlow,ext3_confintlow),
+                     confinthigh = c(ext1_confinthigh,ext2_confinthigh,ext3_confinthigh))
+
+
+ext1points <- EXT_PRIMING %>%   # calculate mean of each block for each bee
+  group_by(BEEID, TEST) %>% 
+  summarize(prop = mean(CHOICE)) 
+
+# Create dataframe for 60 trials training experiment
+
+summary(EXT2_LEARNING)
+summary(EXT2_7v9)
+summary(EXT2_7v8)
+
+dframeext2 <- data.frame(Test = rep(c("Learning", "7v9","7v8")), #create dataframe
+                        percentage = c(0.62, 0.54, 0.58),
+                        confintlow = c(ext4_confintlow, ext5_confintlow, ext6_confintlow),
+                        confinthigh = c(ext4_confinthigh, ext5_confinthigh, ext6_confinthigh))
+dframeext2$Test <- factor(dframeext2$Test, levels=c('Learning', '7v9', '7v8'))
+
+ext2points <- EXT_TRAINING %>%   # calculate mean of each block for each bee
+  group_by(BEEID, TEST) %>% 
+  summarize(prop = mean(CHOICE))
+ext2points$TEST <- factor(ext2points$TEST, levels=c('Learning', '7v9', '7v8')) #
+levels(ext2points$TEST) # check to view the change
+levels(dframeext2$Test) 
+
+```
+
+## GGplot
+
+```{r message=FALSE, error=FALSE}
 
               
 # Generate bargraph for experiment 1 
@@ -581,6 +685,95 @@ trngraph2 <- ggplot()+
     axis.text.y = element_text(size = 15),
     axis.title.y = element_text(vjust = 5, size = 15)) + theme(legend.position = "none")
 print(trngraph2)
+
+
+
+ext1graph <- ggplot()+
+  labs (x= "Test condition", y = "Mean percentage of choices") +
+  geom_bar(data = dframeext1, aes(x = Test, y = percentage, fill = Test), stat = "identity", position = "dodge") + 
+   geom_point(data = ext1points, aes(x = TEST, y = prop, col = BEEID), position = position_jitter(width=0.15, height=0.01), size =2) +
+  geom_errorbar(data= dframeext1, aes(x = Test, y = percentage, ymin = confintlow, ymax = confinthigh), width=.2, position=position_dodge(.9)) +
+  geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
+  scale_fill_manual(values = wes_palette("GrandBudapest2", n = 3)) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1, suffix = NULL), limits = c(0, 1)) +
+  scale_x_discrete(labels=c("7v9" = "7 vs 9", "11v9" = "11 vs 9", "13v15" = "13 vs 15"))+
+  theme(panel.background = element_blank(),
+        axis.line = element_line(colour = "black"),
+        aspect.ratio = 1/1, 
+        plot.margin = margin(0.3,0.3,0.3,0.3, "cm"),
+        axis.title.x = element_text(vjust = -3)) + theme(legend.position = "none")
+print(ext1graph)
+
+
+ext2graph <- ggplot() +
+  labs(x = "Test condition", y = "Mean percentage of choices") +
+  geom_bar(data = dframeext2, aes(x = Test, y = percentage, fill = Test), stat = "identity", position = "dodge") +
+  geom_point(data = ext2points, aes(x = TEST, y = prop, col = BEEID), position = position_jitter(width = 0.15, height = 0.01), size = 2) +
+  geom_errorbar(data = dframeext2, aes(x = Test, y = percentage, ymin = confintlow, ymax = confinthigh), width = 0.2, position = position_dodge(0.9)) +
+  geom_hline(yintercept = 0.5, linetype = "dashed", colour = "black") +
+  # Add asterisk explicitly for Learning condition at y = 0.75
+  geom_text(data = data.frame(Test = "Learning", percentage = 0.9), 
+            aes(x = Test, y = percentage, label = "*"), 
+            size = 10, color = "black") +
+  scale_fill_manual(values = wes_palette("GrandBudapest2", n = 3)) +
+  scale_x_discrete(labels = c("Learning" = "Learning", "7v9" = "7 vs 9", "7v8" = "7 vs 8")) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1, suffix = NULL), limits = c(0, 1)) +
+  theme(panel.background = element_blank(),
+        axis.line = element_line(colour = "black"),
+        aspect.ratio = 1/1,
+        axis.title.y = element_blank(),
+        plot.margin = margin(0.3, 0.3, 0.3, 0.3, "cm"),
+        axis.title.x = element_text(vjust = -3),
+        legend.position = "none")
+
+print(ext2graph)
+
+```
+
+## Learning phase graph for 60 trials of training
+
+```{r message=FALSE, error=FALSE}
+# Step 1: Create new data frame for prediction
+new_data_ext <- data.frame(
+  CNUM = seq(min(EXT_TRAINING_trainingphase$CNUM), max(EXT_TRAINING_trainingphase$CNUM), length.out = 100)
+)
+
+# Add dummy BEEID to satisfy model's random effect structure
+new_data_ext$BEEID <- NA
+
+# Step 2: Predict using the model, excluding random effects (re.form = NA)
+pred_ext <- predict(lm_ext_training, newdata = new_data_ext, type = "link", se.fit = TRUE, re.form = NA)
+
+# Step 3: Back-transform to response (probability) scale
+new_data_ext$fit <- plogis(pred_ext$fit)
+new_data_ext$lwr <- plogis(pred_ext$fit - 1.96 * pred_ext$se.fit)
+new_data_ext$upr <- plogis(pred_ext$fit + 1.96 * pred_ext$se.fit)
+
+# Step 4: Plot
+p_ext <- ggplot(new_data_ext, aes(x = CNUM, y = fit)) +
+  geom_line(size = 1.2, color = "steelblue") +
+  geom_ribbon(aes(ymin = lwr, ymax = upr), alpha = 0.2, fill = "steelblue") +
+  scale_y_continuous(breaks = seq(0, 1, 0.1), limits = c(0, 1), expand = c(0, 0)) +
+  labs(y = "Predicted probability of correct choice", x = "Trial number") +
+  theme(
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank(),
+    axis.title.y = element_text(size = 12, margin = margin(0, 10, 0, 0)),
+    axis.title.x = element_text(size = 12, margin = margin(10, 0, 0, 0)),
+    axis.text.x  = element_text(size = 12, colour = "black"),
+    axis.text.y = element_text(size = 12, colour = "black"),
+    legend.position = "none",
+    axis.line = element_line(color = "black"),
+    panel.background = element_rect(fill = "white", color = NA)
+  )
+
+# Display
+print(p_ext)
+
+# Save to files
+ggsave("p_ext.png", width = 5, height = 5, dpi = 300, path = "../Output")
+ggsave("p_ext.png", width = 5, height = 5, dpi = 300, path = "../Output")
+
 ```
 
 ## Generate Figure x
@@ -602,6 +795,12 @@ ggsave("figx2.png", device = png, height= 4, width=8.2, dpi = 300, path = "../Ou
 trngraph2
 ggsave("figSuppx.pdf", device = pdf, height= 5, width=5, dpi = 300, path = "../Output")
 ggsave("figSuppx.png", device = png, height= 5, width=5, dpi = 300, path = "../Output")
+
+figx3 <- ext1graph + ext2graph
+figx3 + plot_annotation(tag_levels = "a") & 
+  theme(plot.tag.position = c(-0.05, 1),plot.tag = element_text(size = 16, face = "bold"))
+ggsave("fig3x.pdf", device = pdf, height= 4, width=8.2, dpi = 300, path = "../Output")
+ggsave("fig3x.png", device = png, height= 4, width=8.2, dpi = 300, path = "../Output")
 ```
 
 # Checking Model fit
@@ -627,10 +826,13 @@ models <- list(
   training_learning = tlm1,
   training_7v9 = tlm2,
   training_7v8 = tlm3,
-  training_EEvsSA_test = tlm4)
-  
-
-
+  training_EEvsSA_test = tlm4,
+  lm_ext1 = lm_ext1,
+  lm_ext2 = lm_ext2,
+  lm_ext3 = lm_ext3,
+  lm_ext4 = lm_ext4,
+  lm_ext5 = lm_ext5,
+  lm_ext6 = lm_ext6)
 
 # Check for overdispersion
 for (model_name in names(models)) {
