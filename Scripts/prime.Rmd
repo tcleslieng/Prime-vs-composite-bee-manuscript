@@ -1,5 +1,5 @@
 ---
-title: "Exploring categorisation of symmetrical/asymmetrical quantities in honeybees using perceptual grouping"
+title: "Exploring discrimination of symmetrical/asymmetrical quantities in honeybees using perceptual grouping"
 author: "Author names omitted"
 date: "25-07-2024"
 output:
@@ -28,7 +28,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # **Introduction**
 
 
-In this study we tested if free-flying honey bees that are habituated to even composite numbers spontaneously discriminate an odd prime number from an odd composite number. This document provides details on data processing, statistical analysis and figures of the original manuscript submitted for peer review.
+In this study we tested if free-flying honey bees that are primed to even composite numbers spontaneously discriminate an odd prime number from an odd composite number. This document provides details on data processing, statistical analysis and figures of the original manuscript submitted for peer review.
 
 The following code is written in the R programming language.
 
@@ -505,7 +505,7 @@ exp2points <- PRIMEGRP %>%   # calculate mean of each block for each bee
   summarize(prop = mean(CHOICE))
 
 
-# Create dataframe for control experiment bargraph
+#Create dataframe for control experiment bargraph
 
 dframecon <- data.frame(Test = rep(c("3v1", "3v2","3v4","3v5"), each = 2), 
                     Condition = rep(c("EE", "SA"), times = 4),
@@ -781,17 +781,18 @@ ggsave("p_ext.png", width = 5, height = 5, dpi = 300, path = "../Output")
 ```{r message=FALSE}
 
 figx <- exp1graph + exp2graph
-figx + plot_annotation(tag_levels = "a") & 
+figx + plot_annotation(tag_levels = "A") & 
   theme(plot.tag.position = c(-0.05, 1),plot.tag = element_text(size = 16, face = "bold"))
 ggsave("figx.pdf", device = pdf, height= 4, width=8.2, dpi = 300, path = "../Output")
 ggsave("figx.png", device = png, height= 4, width=8.2, dpi = 300, path = "../Output")
 
 
-figx2 <- congraph + trngraph
-figx2 + plot_annotation(tag_levels = "a") & 
+figx2 <- congraph + ext2graph
+figx2 + plot_annotation(tag_levels = "A") & 
   theme(plot.tag.position = c(-0.05, 1),plot.tag = element_text(size = 16, face = "bold"))
 ggsave("figx2.pdf", device = pdf, height= 4, width=8.2, dpi = 300, path = "../Output")
 ggsave("figx2.png", device = png, height= 4, width=8.2, dpi = 300, path = "../Output")
+
 trngraph2
 ggsave("figSuppx.pdf", device = pdf, height= 5, width=5, dpi = 300, path = "../Output")
 ggsave("figSuppx.png", device = png, height= 5, width=5, dpi = 300, path = "../Output")
