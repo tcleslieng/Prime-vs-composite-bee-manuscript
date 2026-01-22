@@ -608,7 +608,7 @@ exp1graph <- ggplot()+
         axis.title.x = element_text(vjust = -3)) + theme(legend.position = "none")
 print(exp1graph)
 
-# Generate bargraph for experiment 2
+# Generate bargraph for experiment 3
 exp2graph <- ggplot() +
   labs(x = "Test condition", y = NULL) +  # Set y-axis title to NULL
   geom_bar(data = dframe2, aes(x = Test, y = percentage, fill = Test), stat = "identity", position = "dodge") + 
