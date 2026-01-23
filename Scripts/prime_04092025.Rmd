@@ -431,6 +431,7 @@ lm_trainingphase <-glmer(CHOICE~ CNUM + (1|BEEID), family = binomial, data = TRA
 summary(lm_trainingphase)
 lm_trainingphase2 <-glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = TRAINING_trainingphase) 
 summary(lm_trainingphase2)
+mean(TRAINING_trainingphase$CHOICE)
 
 
 ```
@@ -459,6 +460,17 @@ confint(tlm6)
 training_SA_confintlow <-(exp(-0.3101593)/(1 + exp(-0.3101593)))
 training_SA_confinthigh <-(exp(0.3813845)/(1 + exp(0.3813845)))
 
+confint(lm_trainingphase)
+trainingphaseconfintlow <-(exp(-0.002835008)/(1 + exp(-0.002835008)))
+trainingphaseconfinthigh <-(exp(0.03981324)/(1 + exp(0.03981324)))
+print(trainingphaseconfintlow)
+print(trainingphaseconfinthigh)
+
+confint(lm_trainingphase2)
+trainingphase2confintlow <-(exp(0.2581226)/(1 + exp(0.2581226)))
+trainingphase2confinthigh <-(exp(0.6249301)/(1 + exp(0.6249301)))
+print(trainingphase2confintlow)
+print(trainingphase2confinthigh)
 ```
 
 ## Training experiments 6 (60 trials)
@@ -473,8 +485,10 @@ summary(lm_ext6)
 
 lm_ext_training <-glmer(CHOICE~ CNUM + (1|BEEID), family = binomial, data = EXT_TRAINING_trainingphase) 
 summary(lm_ext_training)
+
 lm_ext_training2 <-glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXT_TRAINING_trainingphase) 
 summary(lm_ext_training2)
+mean(EXT_TRAINING_trainingphase$CHOICE)
 ```
 
 ### *Confidence intervals*
@@ -491,6 +505,18 @@ ext5_confinthigh <-(exp(0.5289128)/(1 + exp(0.5289128)))
 confint(lm_ext6)
 ext6_confintlow <-(exp(-0.06882467)/(1 + exp(-0.06882467)))
 ext6_confinthigh <-(exp(0.6940668)/(1 + exp(0.6940668)))
+
+confint(lm_ext_training)
+trainingphase_extconfintlow <-(exp(-0.002982056)/(1 + exp(-0.002982056)))
+trainingphase_extconfinthigh <-(exp(0.0142990)/(1 + exp(0.0142990)))
+print(trainingphase_extconfintlow)
+print(trainingphase_extconfinthigh)
+
+confint(lm_ext_training2)
+trainingphase2_extconfintlow <-(exp(0.2627744)/(1 + exp(0.2627744)))
+trainingphase2_extconfinthigh <-(exp(0.5612588)/(1 + exp(0.5612588)))
+print(trainingphase2_extconfintlow)
+print(trainingphase2_extconfinthigh)
 ```
 
 
