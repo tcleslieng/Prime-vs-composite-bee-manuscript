@@ -1,6 +1,6 @@
 ---
-title: "Exploring discrimination of symmetrical/asymmetrical quantities in honeybees using perceptual grouping"
-author: "Author names omitted"
+title: "Exploring the discrimination of prime and composite quantities through perceptual grouping of symmetric and asymmetric element subsets by honeybees"
+author: "Leslie Ng and Scarlett Howard"
 date: "25-07-2024"
 output:
   html_document:
@@ -40,6 +40,7 @@ SA = Equal surface area condition
 # **Libraries** 
 
 ### *Install packages*
+
 ```{r eval=FALSE}
 install.packages("lme4")  # For fitting models
 install.packages("ggplot2") # For plotting
@@ -63,8 +64,8 @@ library(wesanderson)
 library(dplyr) 
 library(tidyverse) 
 library(patchwork) 
-library(performance) # For assumption checking
-library(DHARMa) # For assumption checking
+library(performance) 
+library(DHARMa) 
 ```
 
 # **Data importing**
@@ -94,7 +95,7 @@ EXT_TRAINING <- read.csv(
 EXT_TRAINING_trainingphase <- read.csv(
   "../Data/60training_trainphase_data.csv", header=TRUE)
 
-#Subset Prime data 
+#Subset Experiment 1
 
 PRIMEDATA$BEEID <- as.factor(PRIMEDATA$BEEID) # Treat Bee ID as factor
 POSITIVE <- subset(PRIMEDATA, CONDITION == "POSITIVE") 
@@ -106,37 +107,15 @@ NEG7v9 <-subset(NEGATIVE, TEST == "7v9")
 NEG11v9 <-subset(NEGATIVE, TEST == "11v9") 
 NEG13v15 <-subset(NEGATIVE, TEST == "13v15") 
 
-EXT_7v9 <- subset(EXT_PRIMING, TEST == "7v9") # Experiment 2 data
+
+
+#Subset Experiment 2
+
+EXT_7v9 <- subset(EXT_PRIMING, TEST == "7v9") # 
 EXT_9v11 <- subset(EXT_PRIMING, TEST == "11v9") 
 EXT_13v15 <- subset(EXT_PRIMING, TEST == "13v15") 
 
-EXT2_LEARNING <- subset(EXT_TRAINING, TEST == "Learning") # Experiment 6 data
-EXT2_7v9 <- subset(EXT_TRAINING, TEST == "7v9") 
-EXT2_7v8 <- subset(EXT_TRAINING, TEST == "7v8") 
-
-EXT2_LEARNING_PRIME <- subset(EXT2_LEARNING, CONDITION == "PRIME")
-EXT2_7v9_PRIME <- subset(EXT2_7v9, CONDITION == "PRIME") 
-EXT2_7v8_PRIME <-subset(EXT2_7v8, CONDITION == "PRIME")  
-
-EXT2_LEARNING_COMPOSITE <- subset(EXT2_LEARNING, CONDITION == "COMPOSITE")
-EXT2_7v9_COMPOSITE <- subset(EXT2_7v9, CONDITION == "COMPOSITE") 
-EXT2_7v8_COMPOSITE <-subset(EXT2_7v8, CONDITION == "COMPOSITE")  
-
-
-summary(POS7v9)
-summary(NEG7v9)
-summary(POS11v9)
-summary(NEG11v9)
-summary(POS13v15)
-summary(NEG13v15)
-summary(EXT_7v9)
-summary(EXT_9v11)
-summary(EXT_13v15)
-summary(EXT2_LEARNING)
-summary(EXT2_7v9)
-summary(EXT2_7v8)
-
-#Subset Experiment 1 grouped data
+#Subset Experiment 3
 
 PRIMEGRP$BEEID <- as.factor(PRIMEGRP$BEEID) # Treat Bee ID as factor
 POSITIVE_GRP <- subset(PRIMEGRP, CONDITION == "POS") 
@@ -155,6 +134,7 @@ summary(POS11v9_GRP)
 summary(NEG11v9_GRP)
 summary(POS13v15_GRP)
 summary(NEG13v15_GRP)
+
 
 #Subset control experiment 4 data
 
@@ -182,7 +162,7 @@ summary(SAcon3v2)
 summary(SAcon3v4)
 summary(SAcon3v5)
 
-#Subset Experiment 3 training data
+#Subset Experiment 5 training data
 
 TRAINING$BEEID <- as.factor(TRAINING$BEEID) # Treat Bee ID as factor
 TRAINING$CONDITION <- as.factor(TRAINING$CONDITION)
@@ -210,16 +190,33 @@ summary(TRAINING)
 summary(Training_learning_EE)
 summary(Training_learning_SA)
 
-# Treat variables as factor
+#Subset Experiment 6
 
-EXT_TRAINING$TEST <- as.factor(EXT_TRAINING$TEST)
-EXT_TRAINING$BEEID <- as.factor(EXT_TRAINING$BEEID)
-EXT_PRIMING$BEEID <- as.factor(EXT_PRIMING$BEEID)
-EXT_TRAINING_trainingphase$BEEID <- as.factor(EXT_TRAINING_trainingphase$BEEID)
-TRAINING_trainingphase$BEEID <- as.factor(TRAINING_trainingphase$BEEID)
-levels(EXT_TRAINING$TEST)
+EXT2_LEARNING <- subset(EXT_TRAINING, TEST == "Learning") 
+EXT2_7v9 <- subset(EXT_TRAINING, TEST == "7v9") 
+EXT2_7v8 <- subset(EXT_TRAINING, TEST == "7v8") 
+
+EXT2_LEARNING_PRIME <- subset(EXT2_LEARNING, CONDITION == "PRIME")
+EXT2_7v9_PRIME <- subset(EXT2_7v9, CONDITION == "PRIME") 
+EXT2_7v8_PRIME <-subset(EXT2_7v8, CONDITION == "PRIME")  
+
+EXT2_LEARNING_COMPOSITE <- subset(EXT2_LEARNING, CONDITION == "COMPOSITE")
+EXT2_7v9_COMPOSITE <- subset(EXT2_7v9, CONDITION == "COMPOSITE") 
+EXT2_7v8_COMPOSITE <-subset(EXT2_7v8, CONDITION == "COMPOSITE")  
 
 
+summary(POS7v9)
+summary(NEG7v9)
+summary(POS11v9)
+summary(NEG11v9)
+summary(POS13v15)
+summary(NEG13v15)
+summary(EXT_7v9)
+summary(EXT_9v11)
+summary(EXT_13v15)
+summary(EXT2_LEARNING)
+summary(EXT2_7v9)
+summary(EXT2_7v8)
 
 
 ```
@@ -263,7 +260,6 @@ lm9 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXP1POOLED13v15)
 summary(lm9)
 
 ```
-
 
 ### *Confidence intervals*
 
@@ -442,6 +438,11 @@ tlm3 <- glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = Training_7v8test)
 summary(tlm3)
 tlm_stimuli <- glmer(CHOICE~ STIMULI + (1|BEEID), family = binomial, data = Training_learningtest) 
 summary(tlm_stimuli)
+tlm_stimuli2 <- glmer(CHOICE~ STIMULI + (1|BEEID), family = binomial, data = Training_7v9test) 
+summary(tlm_stimuli)
+tlm_stimuli3 <- glmer(CHOICE~ STIMULI + (1|BEEID), family = binomial, data = Training_7v8test) 
+summary(tlm_stimuli)
+
 
 
 lm_ext4_prime <-glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = Training_learningtest_PRIME) 
@@ -473,7 +474,6 @@ summary(lm_trainingphase1)
 lm_trainingphase2 <-glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = TRAINING_trainingphase) 
 summary(lm_trainingphase2)
 mean(TRAINING_trainingphase$CHOICE)
-
 
 
 ```
@@ -508,10 +508,10 @@ print(ext6_prime_confintlow)
 print(ext6_prime_confinthigh)
 
 
-confint(tlm4)
+confint(tlm5)
 training_EE_confintlow <-(exp(-0.06959618)/(1 + exp(-0.06959618)))
 training_EE_confinthigh <-(exp(0.4391975)/(1 + exp(0.4391975)))
-confint(tlm5)
+confint(tlm6)
 training_SA_confintlow <-(exp(-0.3101593)/(1 + exp(-0.3101593)))
 training_SA_confinthigh <-(exp(0.3813845)/(1 + exp(0.3813845)))
 
@@ -543,7 +543,6 @@ summary(lm_ext6)
 
 lm_ext4_prime <-glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXT2_LEARNING_PRIME) 
 summary(lm_ext4_prime)
-
 lm_ext5_prime <-glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXT2_7v9_PRIME) 
 summary(lm_ext5_prime)
 lm_ext6_prime <-glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXT2_7v8_PRIME) 
@@ -602,38 +601,24 @@ print(trainingphase2_extconfintlow)
 print(trainingphase2_extconfinthigh)
 
 confint(lm_ext4_prime)
-lm_ext4_primeconfintlow <-(exp(0.03109655)/(1 + exp(0.03109655)))
-lm_ext4_primeconfinthigh <-(exp(1.0915254)/(1 + exp(1.0915254)))
+ext4_primeconfintlow <-(exp(0.03109655)/(1 + exp(0.03109655)))
+ext4_primeconfinthigh <-(exp(1.0915254)/(1 + exp(1.0915254)))
 
 confint(lm_ext4_composite)
-lm_ext4_compositeconfintlow <-(exp(-0.1256052)/(1 + exp(-0.1256052)))
-lm_ext4_compositeconfinthigh <-(exp(0.9778516)/(1 + exp(0.9778516)))
+ext4_compositeconfintlow <-(exp(-0.1256052)/(1 + exp(-0.1256052)))
+ext4_compositeconfinthigh <-(exp(0.9778516)/(1 + exp(0.9778516)))
 
 confint(lm_ext5_prime)
-lm_ext5_primeconfintlow <-(exp(-0.1896967)/(1 + exp(-0.1896967)))
-lm_ext5_primeconfinthigh <-(exp(0.7046346)/(1 + exp(0.7046346)))
+ext5_primeconfintlow <-(exp(-0.1896967)/(1 + exp(-0.1896967)))
+ext5_primeconfinthigh <-(exp(0.7046346)/(1 + exp(0.7046346)))
 
 confint(lm_ext6_composite)
-lm_ext6_compositeconfintlow <-(exp(-0.08221807)/(1 + exp(-0.08221807)))
-lm_ext6_compositeconfinthigh <-(exp(1.298001)/(1 + exp(1.298001)))
-print(lm_ext6_compositeconfintlow)
-print(lm_ext6_compositeconfinthigh)
+ext6_compositeconfintlow <-(exp(-0.08221807)/(1 + exp(-0.08221807)))
+ext6_compositeconfinthigh <-(exp(1.298001)/(1 + exp(1.298001)))
 
 confint(lm_ext6_prime)
-lm_ext6_primeconfintlow <-(exp(-0.4444105)/(1 + exp(-0.4444105)))
-lm_ext6_primeconfinthigh <-(exp(0.5816044)/(1 + exp(0.5816044)))
-print(lm_ext6_primeconfintlow)
-print(lm_ext6_primeconfinthigh)
-
-lm_ext4_prime <-glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXT2_LEARNING_PRIME) 
-summary(lm_ext4_prime)
-mean(EXT2_LEARNING_PRIME$CHOICE)
-mean(EXT2_LEARNING_COMPOSITE$CHOICE)
-lm_ext5_prime <-glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXT2_7v9_PRIME) 
-summary(lm_ext5_prime)
-lm_ext6_prime <-glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXT2_7v8_PRIME) 
-summary(lm_ext6_prime)
-
+ext6_primeconfintlow <-(exp(-0.4444105)/(1 + exp(-0.4444105)))
+ext6_primeconfinthigh <-(exp(0.5816044)/(1 + exp(0.5816044)))
 
 ```
 
@@ -698,24 +683,36 @@ controlpoints <- CONTROL %>%   # calculate mean of each block for each bee
   summarize(prop = mean(CHOICE)) 
 
 
+
 # Create dataframe for Experiment 5
 
-dframetrn <- data.frame(Test = rep(c("Learning", "7v9","7v8P, 7v8C")), #create dataframe
-                        percentage = c(0.5, 0.55, 0.53),
-                        confintlow = c(traininglearningconfintlow, training7v9confintlow, training7v8confintlow),
-                        confinthigh = c(traininglearningconfinthigh, training7v9confinthigh, training7v8confinthigh))
+dframetrn <- data.frame(Test = rep(c("Learning", "7v9","7v8P", "7v8C")), #create dataframe
+                        percentage = c(0.5, 0.55, 0.44,0.63),
+                        confintlow = c(traininglearningconfintlow, training7v9confintlow, ext6_prime_confintlow, ext6_composite_confintlow),
+                        confinthigh = c(traininglearningconfinthigh, training7v9confinthigh, ext6_prime_confinthigh, ext6_composite_confinthigh))
 
-trainingpoints <- TRAINING %>%   # calculate mean of each block for each bee
-  group_by(BEEID, CONDITION) %>% 
-  summarize(prop = mean(CHOICE))
+trainingpoints <- TRAINING %>%
+  mutate(CONDITION2 = case_when(
+    CONDITION == "7v8" & PRIMECOMP == "PRIME" ~ "7v8P",
+    CONDITION == "7v8" & PRIMECOMP == "COMPOSITE" ~ "7v8C",
+    TRUE ~ CONDITION  # keep other conditions the same
+  )) %>%
+  group_by(BEEID, CONDITION2) %>%
+  summarize(prop = mean(CHOICE), .groups = "drop")
 
-levels(trainingpoints$CONDITION) # view the existing order of factors in the trainingpoints
-trainingpoints$CONDITION <- factor(trainingpoints$CONDITION, levels=c('Learning', '7v9', '7v8')) # set the order of your factors as you wish
-levels(trainingpoints$CONDITION) # check to view the change
+
+levels(trainingpoints$CONDITION2) # may still need ordering if it's a factor
 
 
-dframetrn$Test <- factor(dframetrn$Test, levels = c('Learning', '7v9', '7v8')) 
-dframetrn$Test # check to view the change
+trainingpoints$CONDITION2 <- factor(trainingpoints$CONDITION2, 
+                                    levels = c("Learning", "7v9", "7v8P", "7v8C"))
+levels(trainingpoints$CONDITION2)
+
+dframetrn$Test <- factor(dframetrn$Test, levels = dframetrn$Test)
+
+
+trainingpoints$CONDITION2 <- factor(trainingpoints$CONDITION2, levels = levels(dframetrn$Test))
+
 
 # Create dataframe for Experiment 6
 
@@ -723,18 +720,27 @@ summary(EXT2_LEARNING)
 summary(EXT2_7v9)
 summary(EXT2_7v8)
 
-dframeext2 <- data.frame(Test = rep(c("Learning", "7v9","7v8")), #create dataframe
-                        percentage = c(0.62, 0.54, 0.58),
-                        confintlow = c(ext4_confintlow, ext5_confintlow, ext6_confintlow),
-                        confinthigh = c(ext4_confinthigh, ext5_confinthigh, ext6_confinthigh))
-dframeext2$Test <- factor(dframeext2$Test, levels=c('Learning', '7v9', '7v8'))
+dframeext2 <- data.frame(Test = rep(c("LearningP", "LearningC", "7v9","7v8P", "7v8C")), #create dataframe
+                        percentage = c(0.63, 0.60, 0.54, 0.52, 0.63),
+                        confintlow = c(ext4_primeconfintlow, ext4_compositeconfintlow, ext5_confintlow, ext6_primeconfintlow, ext6_compositeconfintlow),
+                        confinthigh = c(ext4_primeconfinthigh, ext4_compositeconfinthigh, ext5_confinthigh, ext6_primeconfinthigh, ext6_compositeconfinthigh))
 
-ext2points <- EXT_TRAINING %>%   # calculate mean of each block for each bee
-  group_by(BEEID, TEST) %>% 
-  summarize(prop = mean(CHOICE))
-ext2points$TEST <- factor(ext2points$TEST, levels=c('Learning', '7v9', '7v8')) #
-levels(ext2points$TEST) # check to view the change
-levels(dframeext2$Test) 
+dframeext2$Test <- factor(dframeext2$Test, levels=c('LearningP','LearningC', '7v9', '7v8P','7v8C'))
+
+ext2points <- EXT_TRAINING %>%
+  mutate(TEST2 = case_when(
+    TEST == "Learning" & CONDITION == "PRIME" ~ "LearningP",
+    TEST == "Learning" & CONDITION == "COMPOSITE" ~ "LearningC",
+    TEST == "7v8" & CONDITION == "PRIME" ~ "7v8P",
+    TEST == "7v8" & CONDITION == "COMPOSITE" ~ "7v8C",
+    TRUE ~ TEST  # keep other conditions the same
+  )) %>%
+  group_by(BEEID, TEST2) %>%
+  summarize(prop = mean(CHOICE), .groups = "drop")
+
+
+ext2points$TEST2 <- factor(ext2points$TEST2, levels = dframeext2$Test)
+
 
 
 # Create dataframe for supplementary figure comparing performance in EE and SA
@@ -834,10 +840,13 @@ print(congraph)
 trngraph <- ggplot()+
   labs (x= "Test condition", y = "Mean percentage of choices") +
   geom_bar(data = dframetrn, aes(x = Test, y = percentage, fill = Test), stat = "identity", position = "dodge") + 
-   geom_point(data = trainingpoints, aes(x = CONDITION, y = prop, col = BEEID), position = position_jitter(width=0.15,height=0.01), size =2) +
+   geom_point(data = trainingpoints, aes(x = CONDITION2, y = prop, col = BEEID), position = position_jitter(width=0.15,height=0.01), size =2) +
   geom_errorbar(data= dframetrn, aes(x = Test, y = percentage, ymin = confintlow, ymax = confinthigh), width=.2, position=position_dodge(.9)) +
-  geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
-  scale_fill_manual(values = wes_palette("GrandBudapest2", n = 3)) +
+  geom_text(data = data.frame(Test = "7v8C", percentage = 0.95), 
+            aes(x = Test, y = percentage, label = "*"), 
+            size = 10, color = "black") +
+    geom_hline(yintercept = 0.5, linetype = "dashed", colour = " black") +
+  scale_fill_manual(values = wes_palette("Moonrise3", n = 4)) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1, suffix = NULL), limits = c(0, 1)) +
   theme(panel.background = element_blank(),
         axis.line = element_line(colour = "black"),
@@ -851,15 +860,13 @@ print(trngraph)
 ext2graph <- ggplot() +
   labs(x = "Test condition", y = "Mean percentage of choices") +
   geom_bar(data = dframeext2, aes(x = Test, y = percentage, fill = Test), stat = "identity", position = "dodge") +
-  geom_point(data = ext2points, aes(x = TEST, y = prop, col = BEEID), position = position_jitter(width = 0.15, height = 0.01), size = 2) +
+  geom_point(data = ext2points, aes(x = TEST2, y = prop, col = BEEID), position = position_jitter(width = 0.15, height = 0.01), size = 2) +
   geom_errorbar(data = dframeext2, aes(x = Test, y = percentage, ymin = confintlow, ymax = confinthigh), width = 0.2, position = position_dodge(0.9)) +
   geom_hline(yintercept = 0.5, linetype = "dashed", colour = "black") +
-  # Add asterisk explicitly for Learning condition at y = 0.75
-  geom_text(data = data.frame(Test = "Learning", percentage = 0.9), 
+  geom_text(data = data.frame(Test = "LearningP", percentage = 0.9), 
             aes(x = Test, y = percentage, label = "*"), 
             size = 10, color = "black") +
-  scale_fill_manual(values = wes_palette("GrandBudapest2", n = 3)) +
-  scale_x_discrete(labels = c("Learning" = "Learning", "7v9" = "7 vs 9", "7v8" = "7 vs 8")) +
+  scale_fill_manual(values = wes_palette("Moonrise3", n = 5)) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1, suffix = NULL), limits = c(0, 1)) +
   theme(panel.background = element_blank(),
         axis.line = element_line(colour = "black"),
@@ -939,6 +946,7 @@ p_ext <- ggplot(new_data_ext, aes(x = CNUM, y = fit)) +
 print(p_ext)
 
 ggsave("p_ext5.png", plot = p_ext, width = 5, height = 5, dpi = 300, path = "../Output")
+ggsave("p_ext5.pdf", plot = p_ext, width = 5, height = 5, dpi = 300, path = "../Output")
 
 
 # Experiment 6
@@ -981,7 +989,7 @@ p_ext2 <- ggplot(new_data_ext, aes(x = CNUM, y = fit)) +
 
 print(p_ext2)
 ggsave("p_ext6.png", width = 5, height = 5, dpi = 300, path = "../Output")
-ggsave("p_ext6.png", width = 5, height = 5, dpi = 300, path = "../Output")
+ggsave("p_ext6.pdf", width = 5, height = 5, dpi = 300, path = "../Output")
 
 ```
 
@@ -1009,15 +1017,15 @@ fig4b
 ggsave("fig4b.pdf", device = pdf, height= 4, width=5, dpi = 300, path = "../Output")
 ggsave("fig4b.png", device = png, height= 4, width=5, dpi = 300, path = "../Output")
 
-fig5b <- trngraph
-fig5b
-ggsave("fig5b.pdf", device = pdf, height= 4, width=5, dpi = 300, path = "../Output")
-ggsave("fig5b.png", device = png, height= 4, width=5, dpi = 300, path = "../Output")
+fig5d <- trngraph
+fig5d
+ggsave("fig5d.pdf", device = pdf, height= 4, width=5, dpi = 300, path = "../Output")
+ggsave("fig5d.png", device = png, height= 4, width=5, dpi = 300, path = "../Output")
 
-fig5c <- ext2graph
-fig5c
-ggsave("fig5c.pdf", device = pdf, height= 4, width=5, dpi = 300, path = "../Output")
-ggsave("fig5c.png", device = png, height= 4, width=5, dpi = 300, path = "../Output")
+fig5e <- ext2graph
+fig5e
+ggsave("fig5e.pdf", device = pdf, height= 4, width=5, dpi = 300, path = "../Output")
+ggsave("fig5e.png", device = png, height= 4, width=5, dpi = 300, path = "../Output")
 
 trngraph2 
 ggsave("figSuppx.pdf", device = pdf, height= 5, width=5, dpi = 300, path = "../Output")
@@ -1048,7 +1056,7 @@ models <- list(
   training_learning = tlm1,
   training_7v9 = tlm2,
   training_7v8 = tlm3,
-  training_EEvsSA_test = tlm4,
+  training_EEvsSA_test = tlm_stimuli,
   lm_ext1 = lm_ext1,
   lm_ext2 = lm_ext2,
   lm_ext3 = lm_ext3,
