@@ -474,7 +474,8 @@ summary(lm_trainingphase1)
 lm_trainingphase2 <-glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = TRAINING_trainingphase) 
 summary(lm_trainingphase2)
 mean(TRAINING_trainingphase$CHOICE)
-
+lm_trainphase3 <-glmer(CHOICE~ PRIMECOMP + (1|BEEID), family = binomial, data = TRAINING_trainingphase) 
+summary(lm_trainphase3)
 
 ```
 
@@ -523,10 +524,10 @@ print(trainingphaseCNUMconfintlow)
 print(trainingphaseCNUMconfinthigh)
 
 confint(lm_trainingphase2)
-trainingphase3confintlow <-(exp(0.2581226)/(1 + exp(0.2581226)))
-trainingphase3confinthigh <-(exp(0.6249301)/(1 + exp(0.6249301)))
-print(trainingphase3confintlow)
-print(trainingphase3confinthigh)
+trainingphase2confintlow <-(exp(0.2581226)/(1 + exp(0.2581226)))
+trainingphase2confinthigh <-(exp(0.6249301)/(1 + exp(0.6249301)))
+print(trainingphase2confintlow)
+print(trainingphase2confinthigh)
 ```
 
 ## Training experiments 6 (60 trials)
@@ -571,6 +572,8 @@ lm_ext_training2 <-glmer(CHOICE~ 1 + (1|BEEID), family = binomial, data = EXT_TR
 summary(lm_ext_training2)
 mean(EXT_TRAINING_trainingphase$CHOICE)
 
+lm_ext_training_condition <-glmer(CHOICE~ CONDITION + (1|BEEID), family = binomial, data = EXT_TRAINING_trainingphase) 
+summary(lm_ext_training_condition)
 ```
 
 ### *Confidence intervals*
