@@ -1,7 +1,7 @@
 ---
-title: "Exploring the discrimination of prime and composite quantities through perceptual grouping of symmetric and asymmetric element subsets by honeybees"
+title: "Exploring the discrimination of prime and composite quantities through perceptual grouping of element subsets by honeybees"
 author: "Leslie Ng and Scarlett Howard"
-date: "25-07-2024"
+date: "02-02-2026"
 output:
   html_document:
    toc: yes
